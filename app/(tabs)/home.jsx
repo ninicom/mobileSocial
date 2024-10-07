@@ -1,5 +1,5 @@
-import { View, Text, SafeAreaView, FlatList, Image, RefreshControl, StatusBar } from 'react-native'
-import { useState, React, useEffect, useCallback } from 'react'
+import { View, Text, SafeAreaView, FlatList, Image, RefreshControl } from 'react-native'
+import { useState, React, useCallback } from 'react'
 import images from "../../constants/images"
 import SearchInput from '../../components/SearchInput'
 import Trending from '../../components/Trending'

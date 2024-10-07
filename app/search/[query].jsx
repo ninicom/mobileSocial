@@ -1,10 +1,8 @@
-import { View, Text, SafeAreaView, FlatList, Image, RefreshControl, StatusBar } from 'react-native'
-import { useState, React, useEffect, useCallback } from 'react'
-import images from "../../constants/images"
+import { View, Text, SafeAreaView, FlatList } from 'react-native'
+import { React, useEffect, useCallback } from 'react'
 import SearchInput from '../../components/SearchInput'
-import Trending from '../../components/Trending'
 import EmptyState from '../../components/EmptyState'
-import { searchPosts, getLatestPosts } from '../../lib/appwrite'
+import { searchPosts } from '../../lib/appwrite'
 import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
 import { useLocalSearchParams } from 'expo-router'
@@ -12,7 +10,7 @@ import { useLocalSearchParams } from 'expo-router'
 const Search = () => {
   
   const { query } = useLocalSearchParams();
-  const { data:posts, refech } = useAppwrite(searchPosts(query));
+  const { data:posts, refech } = useAppwrite(() => searchPosts(query));
 
   const renderListHeader = useCallback(() => (
     <View className="pt-6 px-4 space-y-6">
