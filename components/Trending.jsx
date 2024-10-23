@@ -89,6 +89,7 @@ const Trending = ({post}) => {
   return (
     <FlatList 
         data={post}
+        className="pb-2"
         keyExtractor={(item) => item.$id}
         renderItem={({item}) => (
           <TrendingItem 
@@ -101,7 +102,12 @@ const Trending = ({post}) => {
           itemVisiblePercentThreshold: 70
         }}
         horizontal
-    ></FlatList>
+        ListEmptyComponent={() => (
+          <EmptyState 
+            title="No Videos Found"
+          />
+        )}
+    />
   )
 }
 

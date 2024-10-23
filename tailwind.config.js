@@ -3,8 +3,25 @@ module.exports = {
   content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
-      colors: {
-        primary: "#161622",
+      colors: {        
+
+        lightBackground: '#FFFFFF',
+        lightText: '#333333',
+        lightPrimary: '#87CEEB',
+        lightSecondary: '#B0C4DE',
+
+        darkBackground: '#121212',
+        darkText: '#F0F0F0',
+        darkPrimary: '#1DB954',
+        darkSecondary: '#4682B4',
+
+        steel_blue: '#4682B4',
+        light_steel_blue: '#B0C4DE',
+        primary: "#87CEEB",
+        active: "#4682B4",
+        inactive: "#B0C4DE",  
+        likeactive: "#93c5fd",
+             
         secondary: {
           DEFAULT: "#FF9C01",
           100: "#FF9001",

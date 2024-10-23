@@ -1,23 +1,26 @@
 import { View, Image, SafeAreaView, FlatList, TouchableOpacity } from 'react-native'
 import { React, useEffect, useCallback } from 'react'
 import EmptyState from '../../components/EmptyState'
-import { getUserPost } from '../../lib/appwrite'
+import { getUserPost, signOut } from '../../lib/appwrite'
 import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
 import { useGlobalContext } from '../../context/GlobalProvaider'
 import { icons } from '../../constants'
 import { Avatars } from 'react-native-appwrite'
 import InforBox from '../../components/InforBox'
+import { router } from 'expo-router'
 
 const Profile = () => {
   
   const { user, setUser, setIsLoggedIn } = useGlobalContext();
   const { data:posts, refech } = useAppwrite(() => getUserPost(user.$id));
 
-  const logout = () => {
-
+  const logout = async () => {
+    await signOut();
+    setIsLoggedIn(false);
+    router.replace('sign-in');
   }
-
+  
   const renderListHeader = useCallback(() => (
     <View className='w-full justify-center items-center mt-6 mb-12 px-4'>
       <TouchableOpacity 

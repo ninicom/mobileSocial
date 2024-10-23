@@ -4,7 +4,7 @@ import {images} from '../../constants'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 import { Link, router } from 'expo-router'
-import { signIn } from '../../lib/appwrite'
+import { getCurrentUser, signIn } from '../../lib/appwrite'
 import { useGlobalContext } from '../../context/GlobalProvaider'
 
 const SignIn = () => {
@@ -24,10 +24,16 @@ const SignIn = () => {
       setIsSubmitting(false);
       try {
         const result = await signIn(form.email, form.password);
-        setUser(result);
-        setIsLogged(true);
-        // set it to global state...
-        router.replace('/home');
+        if(result!=null){
+          const currentUser = await getCurrentUser();
+          setUser(currentUser);
+          setIsLoggedIn(true);
+          // set it to global state...
+          router.replace('/home');
+        }
+        else {
+          Alert.alert('Invalid', 'Invalid credentials. Please check the email and password.');
+        }
       } catch (error) {
         Alert.alert('Error', error);
       } finally {

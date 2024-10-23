@@ -7,6 +7,7 @@ import EmptyState from '../../components/EmptyState'
 import { getAllPosts, getLatestPosts } from '../../lib/appwrite'
 import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
+import PostCard from '../../components/PostCard'
 
 const Home = () => {
   
@@ -14,13 +15,13 @@ const Home = () => {
   const { data:lastedPosts} = useAppwrite(getLatestPosts);
 
   const renderListHeader = useCallback(() => (
-    <View className="pt-6 px-4 space-y-6">
+    <View className="w-full pt-6 px-4 space-y-6">
       <View className="justify-between items-start flex-row md-6">
         <View>
-          <Text className="font-pmedium text-sm text-gray-100">
+          <Text className="font-pmedium text-sm text-gray-600">
             Welcome Back
           </Text>
-          <Text className="text-2xl font-psemibold text-white">
+          <Text className="text-2xl font-psemibold text-lightText">
             Quyen
           </Text>
         </View>
@@ -36,9 +37,9 @@ const Home = () => {
       <SearchInput 
         placeholder="Search for a video topic"
       />   
-       
+
       <View className="w-full flex-1 pb-8">
-        <Text className="text-base text-gray-100 pb-5">
+        <Text className="text-base text-gray-600 pb-5">
           Lasted video
         </Text>
         <Trending post={lastedPosts} />
@@ -56,12 +57,12 @@ const Home = () => {
   }
 
   return (
-    <SafeAreaView className="bg-primary h-full">
+    <SafeAreaView className="bg-lightBackground h-full">
       <FlatList 
         data={posts}
         keyExtractor={(item) => item.$id}
         renderItem={({item}) => (
-          <VideoCard video={item} />
+          <PostCard video={item} />
         )}
         ListHeaderComponent={renderListHeader}
         // nếu flat list rỗng sẽ hiển thị phần nội dung này thay cho flat list

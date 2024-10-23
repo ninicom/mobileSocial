@@ -20,8 +20,8 @@ creator:{username, avatar } }}) => {
                         />
                     </View>
                     <View className="justify-center flex-1 ml-3 gap-y-1">
-                        <Text className="text-white font-psemibold text-sm">{title }</Text>
-                        <Text className="text-xs text-gray-100 font-pregular">{username}</Text>
+                        <Text className="text-lightText font-psemibold text-sm">{title }</Text>
+                        <Text className="text-xs text-gray-600 font-pregular">{username}</Text>
                     </View>
                 </View>
                 <View className="pt-2">
