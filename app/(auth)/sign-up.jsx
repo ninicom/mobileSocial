@@ -38,7 +38,7 @@ const SignUp = () => {
   }
 
   return (
-    <SafeAreaView className="bg-primary h-full">
+    <SafeAreaView className="bg-white h-full">
       <ScrollView>
         <View className="w-full min-h-[85vh] justify-center px-4 my-4">
           <Image 
@@ -47,7 +47,7 @@ const SignUp = () => {
             className="w-[115px] h-[35px]"
           />
           <Text
-            className="text-2xl text-white font-psemibold mt-10 pb-5"
+            className="text-2xl text-gray-600 font-psemibold mt-10 pb-5"
           >
             Sign up to Aora
           </Text>
@@ -86,7 +86,7 @@ const SignUp = () => {
             className='justify-center pt-5 flex-row gap-2 font-pregular'
           >
             <Text
-              className='text-lg text-gray-100 font-pregular'
+              className='text-lg text-gray-500 font-pregular'
             >
               Have an account already?
             </Text>

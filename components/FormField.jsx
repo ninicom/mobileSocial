@@ -3,7 +3,19 @@ import React, {useState} from 'react'
 import { TouchableOpacity } from 'react-native'
 import { icons } from '../constants'
 
-const FormField = ({title, value, placeholder, handleChangeText, otherStyles, isMultiline=true, textBoxMinHeight=64, textInputStyle, titleStyle, onsubmit, ...props}) => {
+const FormField = ({
+    title, 
+    value, 
+    placeholder, 
+    handleChangeText, 
+    otherStyles, 
+    isMultiline=true, 
+    textBoxMinHeight=64, 
+    textInputStyle, 
+    titleStyle, 
+    onsubmit, 
+    ...props
+}) => {
     
     const [showPassword, setshowPassword] = useState(false)
 
@@ -33,7 +45,7 @@ const FormField = ({title, value, placeholder, handleChangeText, otherStyles, is
                     onChangeText={handleChangeText}
                     secureTextEntry={title === "Password" && !showPassword}
                     multiline={isMultiline}          
-                    onsubmit={onsubmit}                     
+                    onsubmit={onsubmit}                                         
                 />
                 {
                     title === "Password" && (

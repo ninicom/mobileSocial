@@ -16,10 +16,10 @@ const SearchInput = ({title, initialQuery, placeholder, otherStyles, ...props}) 
         }
         else {
             if(pathname.startsWith('/search')) {
-                router.setParams({query});
+                router.setParams({message});
             }
             else {
-                router.push(`/search/${query}`);
+                router.push(`/search/${message}`);
             }
         }
     }

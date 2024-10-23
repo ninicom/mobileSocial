@@ -68,7 +68,7 @@ const Profile = () => {
   }, [user.$id])
 
   return (
-    <SafeAreaView className="bg-primary h-full">
+    <SafeAreaView className="bg-white h-full">
       <FlatList 
         data={posts}
         keyExtractor={(item) => item.$id}

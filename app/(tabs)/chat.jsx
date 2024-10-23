@@ -11,7 +11,7 @@ import { getAllChats } from '../../lib/offlineStorage';
 const Chat = () => {
   
   const { user } = useGlobalContext();
-  const { data:chats, refech } = useAppwrite(getAllChatss);
+  const { data:chats, refech } = useAppwrite(getAllChats);
 
   const [refreshing, setRefreshing] = useState(false)  
   const onRefresh = async () => {

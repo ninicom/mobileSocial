@@ -14,7 +14,7 @@ const SignIn = () => {
     password: ''
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = async () => {
     if(!form.email || !form.password){
@@ -43,7 +43,7 @@ const SignIn = () => {
   }
 
   return (
-    <SafeAreaView className="bg-primary h-full">
+    <SafeAreaView className="bg-white h-full">
       <ScrollView>
         <View className="w-full min-h-[85vh] justify-center px-4 my-4">
           <Image 
@@ -52,7 +52,7 @@ const SignIn = () => {
             className="w-[115px] h-[35px]"
           />
           <Text
-            className="text-2xl text-white font-psemibold mt-10 pb-5"
+            className="text-2xl text-gray-600 font-psemibold mt-10 pb-5"
           >
             Login to aora
           </Text>
@@ -62,6 +62,7 @@ const SignIn = () => {
             handleChangeText={(e) => setForm({ ...form, email: e })}
             otherStyles="mt=7"
             ketboardType="email-address"
+            isMultiline={false}
           />
           
           <FormField 
@@ -69,6 +70,8 @@ const SignIn = () => {
             value={form.password}
             handleChangeText={(e) => setForm({ ...form, password: e })}
             otherStyles="mt=7"
+            onsubmit={submit}
+            isMultiline={false}
           />
 
           <CustomButton
@@ -82,7 +85,7 @@ const SignIn = () => {
             className='justify-center pt-5 flex-row gap-2 font-pregular'
           >
             <Text
-              className='text-lg text-gray-100 font-pregular'
+              className='text-lg text-gray-500 font-pregular'
             >
               Don't have account?
             </Text>

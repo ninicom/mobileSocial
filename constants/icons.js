@@ -19,6 +19,7 @@ import share from '../assets/icons/share.png';
 import liked from '../assets/icons/liked.png';
 import menu3que from '../assets/icons/menu3que.png';
 import more from '../assets/icons/more.png';
+import dot from '../assets/icons/white_dot.png'
 
 export default {
   play,
@@ -42,4 +43,5 @@ export default {
   share,
   menu3que,
   more,
+  dot,
 };

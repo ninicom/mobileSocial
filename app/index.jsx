@@ -13,22 +13,22 @@ export default function App() {
     }
 
     return (
-        <SafeAreaView className="bg-primary h-full">
+        <SafeAreaView className="bg-white h-full">
             <ScrollView contentContainerStyle={{height: '100.06%'}}>
                 <View className='w-full justify-center items-center min-h-[85vh] px-4'>
                     <Image 
                         source={images.logo} 
                         className="w-[130px] h-[84px]"
                         resizeMode="contain"
+                        tintColor={"#4b5563"}
                     />
                     <Image
                         source={images.cards}
                         className="max-w-[380px] w-full h-[300px]"
                         resizeMode="contain"
                     />
-
                     <View className="relative mt-5">
-                        <Text className="text-3xl text-white font-bold text-center">
+                        <Text className="text-3xl text-gray-600 font-bold text-center">
                             Discover Endless Possibilities with
                             <Text className="text-secondary-200"> Aora</Text>
                         </Text>
@@ -39,7 +39,7 @@ export default function App() {
                         />
                     </View>
 
-                    <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
+                    <Text className="text-sm font-pregular text-gray-500 mt-7 text-center">
                         Where creativity meets innovation: embark on journey of limitless exploration with Aora
                     </Text>
 

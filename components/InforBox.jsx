@@ -7,12 +7,12 @@ const InforBox = ({ title, subtitle, containerStyles, titleStyles }) => {
       className={containerStyles}
     >
       <Text
-        className={`text-white text-center font-psemibold ${titleStyles}`}
+        className={`text-gray-600 text-center font-psemibold ${titleStyles}`}
       >
         {title}
       </Text>
       <Text
-        className="text-sm text-gray-100 text-center font-pregular"
+        className="text-sm text-gray-400 text-center font-pregular"
       >
         {subtitle}
       </Text>
