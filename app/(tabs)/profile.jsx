@@ -22,7 +22,7 @@ const Profile = () => {
   }
   
   const renderListHeader = useCallback(() => (
-    <View className='w-full justify-center items-center mt-6 mb-12 px-4'>
+    <View className='w-full justify-center items-center mt-6 mb-2 px-4'>
       <TouchableOpacity 
         className='w-full items-end mt-6 mb-8 px-4'
         onPress={logout}
@@ -44,10 +44,10 @@ const Profile = () => {
       </View>
       <InforBox 
         title={user?.username}
-        containerStyles='mt-5'
+        containerStyles='mt-2'
         titleStyles='text-lg'
       />
-      <View className="mt-5 flex-row">
+      <View className="mt-2 flex-row ">
         <InforBox 
           title={posts?.length || 0}
           subtitle="Posts"

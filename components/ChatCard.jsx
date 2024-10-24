@@ -4,7 +4,7 @@ import { useGlobalContext } from '../context/GlobalProvaider'
 import { timeSinceMessage } from '../lib/formatDate';
 import { shortenText } from '../lib/textUtils';
 import { icons } from '../constants';
-import { router } from 'expo-router';
+import { router, usePathname } from 'expo-router';
 
 const ChatCard = ({
   chat:{ 
@@ -20,6 +20,7 @@ const ChatCard = ({
 }) => {
 
   const { user } = useGlobalContext();
+  const pathname = usePathname();
   var Name = null;
   var ChatIcon = null;
   var timeSend = timeSinceMessage(timestamp);
@@ -32,18 +33,32 @@ const ChatCard = ({
   else {
     members.forEach(member => {
       if(member.email != user.email) {
-        chatName = member.username;
+        Name = member.username;
         ChatIcon = member.avatar;
       }
     });
   };
+
+  Name = shortenText(Name, 15)
   
-  
+  const onChat = () => {
+    if(!$id) {
+        Alert.alert('Missing query', 'Please input to search results across database');
+    }
+    else {
+        if(pathname.startsWith('/chat')) {
+            router.setParams({$id});
+        }
+        else {
+            router.push(`/chat/${$id}`);
+        }
+      }
+  }
 
 
   
   return (
-    <TouchableOpacity 
+    <TouchableOpacity onPress={onChat}
       className="flex-row h-35 w-full m-1 pb-1 items-center"   
     >
         <Image 
@@ -53,7 +68,7 @@ const ChatCard = ({
         <View className='pl-2 flex-col'>
 
           <Text className={`text-base ${(!readed)?"font-bold":""}`}>
-            {chatName}
+            {Name}
           </Text>
 
           <View className='flex-row'>

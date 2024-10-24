@@ -6,10 +6,10 @@ import { router } from 'expo-router'
 
 const EmptyState = ({title, subtitle}) => {
   return (
-    <View className="justify-center items-center px-4">
+    <View className="justify-center items-center p-2">
         <Image 
             source={images.empty}
-            className="w-[270px] h-[215px]"
+            className="w-[270px] h-[100px]"
             resizeMode='contain'
         />
         <Text className="text-2xl font-psemibold text-black">
