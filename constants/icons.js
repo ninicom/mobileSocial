@@ -22,8 +22,10 @@ import more from '../assets/icons/more.png';
 import dot from '../assets/icons/white_dot.png'
 import call from '../assets/icons/phone-call.png';
 import videocall from '../assets/icons/video.png';
-import option from '../assets/icons/option.png'
-import picture from '../assets/icons/insert-picture-icon.png'
+import option from '../assets/icons/option.png';
+import picture from '../assets/icons/insert-picture-icon.png';
+import send from '../assets/icons/send.png';
+import cancel from '../assets/icons/cancel.png';
 
 export default {
   play,
@@ -52,4 +54,6 @@ export default {
   videocall,
   option,
   picture,
+  send,
+  cancel,
 };

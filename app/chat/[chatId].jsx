@@ -40,8 +40,6 @@ const Chat = () => {
     }    
   };
   ChatName = shortenText(ChatName, 15);
-  console.log('chatname', ChatName);
-  console.log('chatIcon', ChatIcon);
   
 
   const renderListHeader = useCallback(() => (
