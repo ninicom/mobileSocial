@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, FlatList, TouchableOpacity, Image, TextInput, KeyboardAvoidingView, Platform  } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, Image, TextInput, KeyboardAvoidingView, Platform  } from 'react-native'
 import { React, useEffect, useCallback } from 'react'
 import SearchInput from '../../components/SearchInput'
 import EmptyState from '../../components/EmptyState'
@@ -12,6 +12,7 @@ import { useGlobalContext } from '../../context/GlobalProvaider'
 import { shortenText } from '../../lib/textUtils'
 import FormField from '../../components/FormField'
 import MessageInput from '../../components/MessageInput'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Chat = () => {
   
@@ -21,6 +22,7 @@ const Chat = () => {
 
   const members = data.members;
   const messages = data.messages;
+
 
   var ChatName = null;
   var ChatIcon = null;
@@ -42,8 +44,15 @@ const Chat = () => {
   ChatName = shortenText(ChatName, 15);
   
 
-  const renderListHeader = useCallback(() => (
-    <View className="pt-6 px-4 space-x-2 flex-row items-center border-b-[0.5px] pb-1 border-gray-100">
+   // Hàm renderFooter sử dụng useCallback để tối ưu hóa
+   const renderFooter = useCallback(() => (
+    <MessageInput />
+  ), []);
+
+
+  return (
+    <SafeAreaView className="bg-white h-full">
+      <View className="px-4 space-x-2 flex-row items-center border-b-[0.5px] pb-1 border-gray-100">
         <TouchableOpacity onPress={router.back}>
             <Image 
                 source={icons.leftArrow}
@@ -86,30 +95,25 @@ const Chat = () => {
             tintColor={'#87CEEB'}
           />
         </TouchableOpacity>
-    </View>
-  ));
-
-   // Hàm renderFooter sử dụng useCallback để tối ưu hóa
-   const renderFooter = useCallback(() => (
-    <MessageInput />
-  ), []);
-
-
-  return (
-    <SafeAreaView className="bg-white h-full">
+      </View>
       <FlatList 
-        data={data}
+        className='bg-red-100'
+        data={messages}
         keyExtractor={(item) => item.$id}
         renderItem={({item}) => (
-            <Text>{item.$id}</Text>
+            <Text className='text-red-200 h-56'>{item.message}</Text>
         )}
-        ListHeaderComponent={renderListHeader}
-        ListFooterComponent={renderFooter}
+        ListFooterComponent={renderFooter}                
+        contentContainerStyle={{ flexGrow: 1 }}
         // nếu flat list rỗng sẽ hiển thị phần nội dung này thay cho flat list
         ListEmptyComponent={() => (
-          <View className='bottom-0 flex-1'></View>
+          <EmptyState 
+            title="No Chat Found"
+            subtitle="Make new chat"
+          />
         )}
-      />
+      />      
+      <MessageInput/>
     </SafeAreaView>
   )
 }
