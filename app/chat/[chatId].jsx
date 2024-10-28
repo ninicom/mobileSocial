@@ -13,6 +13,7 @@ import { shortenText } from '../../lib/textUtils'
 import FormField from '../../components/FormField'
 import MessageInput from '../../components/MessageInput'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import MessageCard from '../../components/MessageCard'
 
 const Chat = () => {
   
@@ -97,11 +98,10 @@ const Chat = () => {
         </TouchableOpacity>
       </View>
       <FlatList 
-        className='bg-red-100'
         data={messages}
         keyExtractor={(item) => item.timestamp}
         renderItem={({item}) => (
-            <Text className='text-red-200 h-5'>{item.message}</Text>
+          <MessageCard  message={item}/>
         )}     
         // nếu flat list rỗng sẽ hiển thị phần nội dung này thay cho flat list
         ListEmptyComponent={() => (
