@@ -14,7 +14,7 @@ const calculateNumColumns = () => {
 };
 
 
-const MessageInput = ({handleChangetext, handleSend, handleFile}) => {
+const MessageInput = ({handleChangetext, handleSend}) => {
     const [form, setForm] = useState({
         message: '',
         data: [],
@@ -23,8 +23,23 @@ const MessageInput = ({handleChangetext, handleSend, handleFile}) => {
     const [key, setKey] = useState(0);
     const [numColumns, setNumColumns] = useState(calculateNumColumns());
     
-    const maxVisibleRows = 2;
-    const maxVisibleItems = numColumns * maxVisibleRows; // Giới hạn số lượng mục hiển thị
+    const [rowsVisible, setRowsVisible] = useState(() => {
+        let columns = form.data.length;
+        return Math.floor(columns / numColumns);
+    });
+
+    // tính số lượng hàng để hiển thị ảnh
+    useEffect(() => {
+        // nếu tồn tại data sẽ gán giá trị hàng và nếu không sẽ gán = 0
+        if(form.data.length > 0){
+            // số phần tử ảnh
+            let columns = form.data.length;
+            // tính số hàng với hàm làm tròn lên ceil
+            setRowsVisible(Math.ceil(columns / numColumns));
+        } else {
+            setRowsVisible(0);
+        }        
+    }, [form.data.length]);
 
     useEffect(() => {
         setKey(prevKey => prevKey + 1);
@@ -89,7 +104,7 @@ const MessageInput = ({handleChangetext, handleSend, handleFile}) => {
     );
 
     return (
-        <View className='flex-row w-full items-end p-2'>
+        <View className={`flex-row w-full items-end p-2 ${(rowsVisible<=0)?(""):((rowsVisible>1)?('h-56'):('h-40'))}`}>
             <TouchableOpacity 
                 className='pb-[5px] pr-2' 
                 onPress={() => openPicker()}
@@ -102,25 +117,23 @@ const MessageInput = ({handleChangetext, handleSend, handleFile}) => {
 
                 />
             </TouchableOpacity>
-            <View className='flex-1 h-10 flex-col'>
-                {!form.data?(
-                    <ScrollView className='max-h-52 w-full mb-1 bg-gray-50'>
-                        <FlatList
-                            key={key} // Thay đổi key prop khi số lượng dữ liệu thay 
-                            data={form.data}
-                            renderItem={renderItem}
-                            numColumns={numColumns}                        
-                            keyExtractor={(item) => item.uri}
-                            contentContainerStyle={form.data.length === 0 ? { flexGrow: 1 } : {}}
-                            scrollEnabled={true}
-                        />
-                    </ScrollView>                    
+            <View className='flex-1 flex-col'>
+                {form.data?(
+                    <FlatList
+                        className='flex-1 mb-1 bg-gray-50'
+                        key={key} // Thay đổi key prop khi số lượng dữ liệu thay 
+                        data={form.data}
+                        renderItem={renderItem}
+                        numColumns={numColumns}                        
+                        keyExtractor={(item) => item.uri}
+                        contentContainerStyle={form.data.length === 0 ? { flexGrow: 1 } : {}}
+                        scrollEnabled={true}
+                    />                 
                     ):(<></>)
                 }
                 <FormField
                     isMultiline={true}
                     textBoxMinHeight={35}
-                    otherStyles={'flex-1'}
                     handleChangeText={handleChangetext}
                 />
             </View>            

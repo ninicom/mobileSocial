@@ -46,7 +46,7 @@ const Chat = () => {
 
    // Hàm renderFooter sử dụng useCallback để tối ưu hóa
    const renderFooter = useCallback(() => (
-    <MessageInput />
+    <></>
   ), []);
 
 
@@ -99,12 +99,10 @@ const Chat = () => {
       <FlatList 
         className='bg-red-100'
         data={messages}
-        keyExtractor={(item) => item.$id}
+        keyExtractor={(item) => item.timestamp}
         renderItem={({item}) => (
-            <Text className='text-red-200 h-56'>{item.message}</Text>
-        )}
-        ListFooterComponent={renderFooter}                
-        contentContainerStyle={{ flexGrow: 1 }}
+            <Text className='text-red-200 h-5'>{item.message}</Text>
+        )}     
         // nếu flat list rỗng sẽ hiển thị phần nội dung này thay cho flat list
         ListEmptyComponent={() => (
           <EmptyState 
