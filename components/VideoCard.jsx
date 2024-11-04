@@ -8,6 +8,21 @@ const VideoCard = ({video:{ title, thumbnail, video,
 creator:{username, avatar } }}) => {
 
     const [play, setPlay] = useState(false)
+    
+    const [isLiked, setIsLiked] = useState(false);
+
+    onclickLike = () => {
+        setIsLiked(!isLiked);
+        // do something
+    }
+
+    onclickComment = () => {
+
+    }
+
+    onclickShare = () => {
+
+    }
 
     return (
         <View className="flex-col items-center px-4 mb-14">
@@ -66,6 +81,42 @@ creator:{username, avatar } }}) => {
                     />
                 </TouchableOpacity>
             )}
+            <View className='h-[50px] w-full justify-center items-center flex-row border-b border-gray-300'>
+                {isLiked ? (
+                    <TouchableOpacity className=' flex-1 h-full items-center justify-center flex-row space-x-1' onPress={onclickLike}>
+                        <Image source={icons.liked} 
+                            className='w-[24px] h-[24px]'
+                            tintColor={'#93c5fd'}
+                        />
+                        <Text className='text-likeactive'>Like</Text>
+                    </TouchableOpacity>
+
+                ) : (
+                    <TouchableOpacity className=' flex-1 h-full items-center justify-center flex-row space-x-1' onPress={onclickLike}>
+                        <Image source={icons.like} 
+                            className='w-[24px] h-[24px]'
+                            tintColor={'#4b5563'}
+                        />
+                        <Text className='text-'>Like</Text>
+                    </TouchableOpacity>
+                )}  
+
+                <TouchableOpacity className=' flex-1 h-full items-center justify-center flex-row space-x-1' onPress={onclickComment}>
+                    <Image source={icons.comment} 
+                        className='w-[24px] h-[24px]'
+                        tintColor={'#4b5563'}
+                    />
+                    <Text className='text-gray-600'>Comment</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity className='flex-1 h-full items-center justify-center flex-row space-x-1' onPress={onclickShare}>
+                    <Image source={icons.share} 
+                        className='w-[24px] h-[24px]'
+                        tintColor={'#4b5563'}
+                    />
+                    <Text className='text-gray-600'>Share</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }

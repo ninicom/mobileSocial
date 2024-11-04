@@ -8,7 +8,8 @@ import Home from './home';
 import Chat from './chat';
 import Create from './create';
 import Friend from './friend';
-import Profile from './profile'
+import Profile from './profile';
+import TestAPI from './testAPI';
 
 const renderScene = SceneMap({
   home: Home,
@@ -16,6 +17,7 @@ const renderScene = SceneMap({
   create: Create,
   friend: Friend,
   profile: Profile,
+  testapi: TestAPI,
 });
 
 const renderTabBar = props => (
@@ -41,6 +43,7 @@ export default function TabViewExample() {
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
+    { key: 'testapi', icon: icon.bookmark },
     { key: 'home', icon: icon.home },
     { key: 'chat', icon: icon.chat },
     { key: 'create', icon: icon.plus },

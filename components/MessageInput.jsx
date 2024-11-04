@@ -104,7 +104,7 @@ const MessageInput = ({handleChangetext, handleSend}) => {
     );
 
     return (
-        <View className={`flex-row w-full items-end p-2 ${(rowsVisible<=0)?(""):((rowsVisible>1)?('h-56'):('h-40'))}`}>
+        <View className={`flex-row bg-gray-50 w-full items-end p-2 ${(rowsVisible<=0)?(""):((rowsVisible>1)?('h-56'):('h-40'))}`}>
             <TouchableOpacity 
                 className='pb-[5px] pr-2' 
                 onPress={() => openPicker()}

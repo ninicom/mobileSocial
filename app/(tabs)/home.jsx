@@ -15,7 +15,7 @@ const Home = () => {
   const { data:lastedPosts} = useAppwrite(getLatestPosts);
 
   const renderListHeader = useCallback(() => (
-    <View className="w-full pt-6 px-4 space-y-6">
+    <View className="w-full pt-6 px-4 space-y-6 flex-col">
       <View className="justify-between items-start flex-row md-6">
         <View>
           <Text className="font-pmedium text-sm text-gray-600">
@@ -42,7 +42,9 @@ const Home = () => {
         <Text className="text-base text-gray-600 pb-5">
           Lasted video
         </Text>
-        <Trending post={lastedPosts} />
+        <View className='w-full h-75'>
+         <Trending post={lastedPosts} />
+        </View>        
       </View>  
     </View>
   ), [images.logoSmall, lastedPosts]);

@@ -4,11 +4,15 @@ import { icons, images } from '../constants'
 import { TouchableOpacity } from 'react-native'
 import { ResizeMode, Video, resizeMode, allowsFullscreen } from 'expo-av'
 import { formatDate } from '../lib/formatDate'
+import { shortenText } from '../lib/textUtils'
+import { router, usePathname } from 'expo-router'
 
 const PostCard = ({video:{ title, thumbnail, video, $createdAt,
 creator:{username, avatar } }}) => {
 
-    const [isLiked, setIsLiked] = useState(false)
+    const [isLiked, setIsLiked] = useState(false);
+    
+    const pathname = usePathname();
 
     onclickLike = () => {
         setIsLiked(!isLiked);
@@ -16,8 +20,19 @@ creator:{username, avatar } }}) => {
     }
 
     onclickComment = () => {
-
+        if(!username) {
+            Alert.alert('Missing query', 'Please input to search results across database');
+        }
+        else {
+            if(pathname.startsWith('/post')) {
+                router.setParams({username});
+            }
+            else {
+                router.push(`/post/${username}`);
+            }
+        }
     }
+    
 
     onclickShare = () => {
 
@@ -45,6 +60,9 @@ creator:{username, avatar } }}) => {
                     />
                 </View>
             </View>
+            <Text className='w-full'>
+                {title}            
+            </Text>                  
             <Image
                 source={{uri: thumbnail}}
                 className="w-full rounded-xl mt-3 relative justify-center items-center bg-white/10"

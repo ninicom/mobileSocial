@@ -1,5 +1,5 @@
 import { View, Text, FlatList, TouchableOpacity, Image, TextInput, KeyboardAvoidingView, Platform  } from 'react-native'
-import { React, useEffect, useCallback } from 'react'
+import { React, useEffect, useCallback, useRef } from 'react'
 import SearchInput from '../../components/SearchInput'
 import EmptyState from '../../components/EmptyState'
 import { searchPosts } from '../../lib/appwrite'
@@ -20,10 +20,15 @@ const Chat = () => {
   const { chatId } = useLocalSearchParams();
   const { data, refech } = useAppwrite(() => getChatMessages(chatId));
   const { user } = useGlobalContext();
+  const flatListRef = useRef(null);
 
+    const scrollToBottom = () => {
+        flatListRef.current?.scrollToEnd({ animated: false });
+    };
+
+    
   const members = data.members;
   const messages = data.messages;
-
 
   var ChatName = null;
   var ChatIcon = null;
@@ -42,8 +47,26 @@ const Chat = () => {
       });
     }    
   };
+
   ChatName = shortenText(ChatName, 15);
   
+  useEffect(() => {
+    if(messages){
+      if (messages.length) {
+        scrollToBottom();
+      }
+    }    
+  }, [messages]);
+
+  useEffect(() => {
+    // Scroll to bottom on initial render
+    const timer = setTimeout(() => {
+        scrollToBottom();
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
 
    // Hàm renderFooter sử dụng useCallback để tối ưu hóa
    const renderFooter = useCallback(() => (
@@ -98,6 +121,7 @@ const Chat = () => {
         </TouchableOpacity>
       </View>
       <FlatList 
+        ref={flatListRef}
         data={messages}
         keyExtractor={(item) => item.timestamp}
         renderItem={({item}) => (
