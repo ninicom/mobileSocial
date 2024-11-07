@@ -1,17 +1,19 @@
-import { View, Text, SafeAreaView, ScrollView, Image, Alert } from 'react-native'
+import { View, Text, ScrollView, Image, Alert } from 'react-native'
 import {React, useState} from 'react'
 import {images} from '../../constants'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 import { Link, router } from 'expo-router'
-import { createUser } from '../../lib/appwrite'
+import { createUser } from '../../lib/apiClient'
 import { useGlobalContext } from '../../context/GlobalProvaider'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const SignUp = () => {
   const { setUser, setIsLoggedIn } = useGlobalContext();
   const [form, setForm] = useState({
     userName: '',
     email: '',
+    phone: '',
     password: ''
   });
 
@@ -24,7 +26,7 @@ const SignUp = () => {
     else{
       setIsSubmitting(false);
       try {
-        const result = await createUser(form.email, form.password, form.userName);
+        const result = await createUser(form.email, form.phone, form.password, form.userName);
         setUser(result);
         setIsLoggedIn(true);
         // set it to global state...
@@ -40,19 +42,20 @@ const SignUp = () => {
   return (
     <SafeAreaView className="bg-white h-full">
       <ScrollView>
-        <View className="w-full min-h-[85vh] justify-center px-4 my-4">
-          <Image 
-            source={images.logo}
-            resizeMode='contain'
-            className="w-[115px] h-[35px]"
-          />
-          <Text
-            className="text-2xl text-gray-600 font-psemibold mt-10 pb-5"
-          >
-            Sign up to Aora
-          </Text>
+        <View className="w-full min-h-[85vh] justify-center px-4 my-4s">
+          <View className='flex-row items-center pt-2'>
+            <Image 
+              source={images.logoSmall}
+              resizeMode='contain'
+              className="w-[35px] h-[35px]"
+            />
+            <Text
+              className="text-2xl text-gray-600 font-psemibold"
+            >
+              Sign up to Aora
+            </Text>
+          </View>
 
-            
           <FormField 
             title="Username"
             value={form.userName}
@@ -68,6 +71,13 @@ const SignUp = () => {
             ketboardType="email-address"
           />
           
+          <FormField 
+            title="Phone"
+            value={form.phone}
+            handleChangeText={(e) => setForm({ ...form, phone: e })}
+            otherStyles="mt=7"
+          />
+
           <FormField 
             title="Password"
             value={form.password}
