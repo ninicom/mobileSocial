@@ -11,50 +11,48 @@ import InforBox from '../../components/InforBox'
 import { router } from 'expo-router'
 
 const Profile = () => {
-  
-  const { user, setUser, setIsLoggedIn } = useGlobalContext();
-  const { data:posts, refech } = useAppwrite(() => getUserPost(user.$id));
 
+  const { user, setUser, setIsLoggedIn } = useGlobalContext();
+  const { data: posts, refech } = useAppwrite(() => getUserPost(user.email));
   const logout = async () => {
     await signOut();
     setIsLoggedIn(false);
     router.replace('sign-in');
   }
-  
   const renderListHeader = useCallback(() => (
     <View className='w-full justify-center items-center mt-6 mb-2 px-4'>
-      <TouchableOpacity 
+      <TouchableOpacity
         className='w-full items-end mt-6 mb-8 px-4'
         onPress={logout}
       >
         <Image
-          source={ icons.logout }
+          source={icons.logout}
           resizeMode='contain'
           className='w-6 h-6'
-         />
+        />
       </TouchableOpacity>
       <View
         className='w-16 h-16 border border-blue-300 rounded-lg justify-center items-center'
       >
-        <Image 
-          source={{uri: user?.avatar }}
+        <Image
+          source={{ uri: user?.avatar }}
           className='w-[90%] h-[90%] rounded-lg'
           resizeMode='cover'
         />
       </View>
-      <InforBox 
+      <InforBox
         title={user?.username}
         containerStyles='mt-2'
         titleStyles='text-lg'
       />
       <View className="mt-2 flex-row ">
-        <InforBox 
+        <InforBox
           title={posts?.length || 0}
           subtitle="Posts"
           containerStyles='mr-5'
           titleStyles='text-xl'
         />
-        <InforBox 
+        <InforBox
           title='1.2k'
           subtitle="Followers"
           titleStyles='text-xl'
@@ -65,20 +63,20 @@ const Profile = () => {
 
   useEffect(() => {
     refech();
-  }, [user.$id])
+  }, [user])
 
   return (
     <SafeAreaView className="bg-white h-full">
-      <FlatList 
+      <FlatList
         data={posts}
         keyExtractor={(item) => item.$id}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <VideoCard video={item} />
         )}
         ListHeaderComponent={renderListHeader}
         // nếu flat list rỗng sẽ hiển thị phần nội dung này thay cho flat list
         ListEmptyComponent={() => (
-          <EmptyState 
+          <EmptyState
             title="No Videos Found"
             subtitle="Be the fist of one to upload video"
           />

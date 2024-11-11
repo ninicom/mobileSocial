@@ -10,8 +10,8 @@ import { useGlobalContext } from '../../context/GlobalProvaider'
 const SignIn = () => {
   const { setUser, setIsLoggedIn } = useGlobalContext();
   const [form, setForm] = useState({
-    email: '',
-    password: ''
+    email: 'user1@gmail.com',
+    password: 'User1@gmail.com'
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
