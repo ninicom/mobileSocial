@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native'
 import { icons } from '../constants'
 import { router, usePathname } from 'expo-router'
 
-const SearchInput = ({title, initialQuery, placeholder, otherStyles, ...props}) => {
+const SearchInput = ({title, initialQuery, placeholder, otherStyles, path='/search', ...props}) => {
     
     const pathname = usePathname();
     const [query, setQuery] = useState(initialQuery || '');
@@ -15,11 +15,11 @@ const SearchInput = ({title, initialQuery, placeholder, otherStyles, ...props}) 
             Alert.alert('Missing query', 'Please input to search results across database');
         }
         else {
-            if(pathname.startsWith('/search')) {
-                router.setParams({message});
+            if(pathname.startsWith(path)) {
+                router.setParams({query});
             }
             else {
-                router.push(`/search/${message}`);
+                router.push(`${path}/${query}`);
             }
         }
     }

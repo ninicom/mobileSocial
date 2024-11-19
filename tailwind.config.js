@@ -3,7 +3,7 @@ module.exports = {
   content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
-      colors: {        
+      colors: {
 
         lightBackground: '#FFFFFF',
         lightText: '#333333',
@@ -19,9 +19,9 @@ module.exports = {
         light_steel_blue: '#B0C4DE',
         primary: "#87CEEB",
         active: "#4682B4",
-        inactive: "#B0C4DE",  
+        inactive: "#B0C4DE",
         likeactive: "#93c5fd",
-             
+
         secondary: {
           DEFAULT: "#FF9C01",
           100: "#FF9001",
@@ -37,15 +37,24 @@ module.exports = {
         },
       },
       fontFamily: {
-        pthin: ["Poppins-Thin", "sans-serif"],
-        pextralight: ["Poppins-ExtraLight", "sans-serif"],
-        plight: ["Poppins-Light", "sans-serif"],
-        pregular: ["Poppins-Regular", "sans-serif"],
-        pmedium: ["Poppins-Medium", "sans-serif"],
-        psemibold: ["Poppins-SemiBold", "sans-serif"],
-        pbold: ["Poppins-Bold", "sans-serif"],
-        pextrabold: ["Poppins-ExtraBold", "sans-serif"],
-        pblack: ["Poppins-Black", "sans-serif"],
+        sans: [
+          'ui-sans-serif',
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'Helvetica Neue',
+          'Arial',
+          'Noto Sans',
+          'sans-serif',
+          'Apple Color Emoji',
+          'Segoe UI Emoji',
+          'Segoe UI Symbol',
+          'Noto Color Emoji',
+        ],
+        serif: ['serif'],
+        mono: ['monospace'],
       },
     },
   },

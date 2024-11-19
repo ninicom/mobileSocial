@@ -47,6 +47,8 @@ const rootLayout = () => {
         <Stack.Screen name="search/[query]" options={{headerShown: false}}></Stack.Screen> 
         <Stack.Screen name="chat/[chatId]" options={{headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal'}}></Stack.Screen> 
         <Stack.Screen name="post/[postId]" options={{headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal'}}></Stack.Screen> 
+        <Stack.Screen name="searchFriend/[query]" options={{headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal'}}></Stack.Screen> 
+        <Stack.Screen name="searchFriend2/[query]" options={{headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal'}}></Stack.Screen> 
       </Stack>      
       <StatusBar 
           backgroundColor='#FFFFFF'
