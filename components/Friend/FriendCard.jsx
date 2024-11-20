@@ -47,7 +47,7 @@ const FriendCard = ({ person, status = false }) => {
                     <CustomButton
                         containerStyles={'h-[30px] w-30 rounded-md'}
                         textStyle={'text-base'}
-                        title={'Add firend'}
+                        title={'Add friend'}
                         handlePress={onAddFriend}
                     />
                 ) : (<CustomButton

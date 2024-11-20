@@ -10,11 +10,16 @@ const FriendRequestCard = ({userId}) => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const user = await getUser(userId);
-            setPerson(user.user);
+          const userResponse = await getUser(userId);
+          if (userResponse && userResponse.user) {
+            setPerson(userResponse.user);
+          } else {
+            // Xử lý trường hợp không tìm thấy người dùng
+            Alert.alert('Error', 'User not found');
+          }
         };
         fetchUser();
-    }, [userId]);
+      }, [userId]);
 
     if (!person) {
         return (
@@ -45,7 +50,7 @@ const FriendRequestCard = ({userId}) => {
             setStatus('Removed the invitation');
             var added = await declineFriend(userId);
             if (added) {
-                setStatus('removed the invitation');
+                setStatus('Removed the invitation');
             } else {
                 setStatus('');
             }
