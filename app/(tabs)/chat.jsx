@@ -12,8 +12,7 @@ const Chat = () => {
 
   const { user } = useGlobalContext();
   const { data: chats, refech } = useAppwrite(getAllChats);
-
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshing, setRefreshing] = useState(false);
   const onRefresh = async () => {
     setRefreshing(true);
     // re call the video -> if any new video appeard 
@@ -34,7 +33,7 @@ const Chat = () => {
           className='w-12 h-12 border border-blue-300 rounded-lg justify-center items-center mr-2'
         >
           <Image
-            source={{ uri: user?.avatar }}
+            source={{ uri: user.user?.avatar }}
             className='w-[90%] h-[90%] rounded-lg'
             resizeMode='cover'
           />
@@ -58,8 +57,7 @@ const Chat = () => {
         data={chats}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
-          //<ChatCard chat={item} />
-          <></>
+          <ChatCard chat={item} />
         )}
         // nếu flat list rỗng sẽ hiển thị phần nội dung này thay cho flat list
         ListEmptyComponent={() => (

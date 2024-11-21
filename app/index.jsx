@@ -40,7 +40,7 @@ export default function App() {
                     </View>
 
                     <Text className="text-sm font-pregular text-gray-500 mt-7 text-center">
-                        Where creativity meets innovation: embark on journey of limitless exploration with Aora
+                        Where creativity meets innovation: embark on journey of limitless exploration with HiFriend
                     </Text>
 
                     <CustomButton 

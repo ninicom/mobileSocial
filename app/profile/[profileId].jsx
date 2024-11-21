@@ -9,16 +9,11 @@ import { icons } from '../../constants'
 import { Avatars } from 'react-native-appwrite'
 import InforBox from '../../components/InforBox'
 import { router } from 'expo-router'
+import { getUser } from '../../lib/callAPIClient/userAPI'
 
 const UserProfile = () => {
-    const postId = useLocalSearchParams();
-    const { user, setUser, setIsLoggedIn } = useGlobalContext();
-    const { data: posts, refech } = useAppwrite(() => getUserPost(user.email));
-    const logout = async () => {
-        await signOut();
-        setIsLoggedIn(false);
-        router.replace('sign-in');
-    }
+    const profileId = useLocalSearchParams();
+    const { data: user, refech: refechUser } = useAppwrite(() => getUser(profileId));
     const renderListHeader = useCallback(() => (
         <View className='w-full justify-center items-center mt-6 mb-2 px-4'>
             <TouchableOpacity
