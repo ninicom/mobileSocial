@@ -26,7 +26,7 @@ const SignIn = () => {
         const result = await signIn(form.email, form.password);
         if(result!=null){
           const currentUser = await getCurrentUser();
-          setUser(currentUser);
+          setUser(currentUser.user);
           setIsLoggedIn(true);
           // set it to global state...
           router.replace('/home');

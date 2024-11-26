@@ -8,6 +8,7 @@ import * as DocumentPicker from 'expo-document-picker'
 import { router } from 'expo-router';
 import { createVideo } from '../../lib/appwrite';
 import { useGlobalContext } from '../../context/GlobalProvaider';
+import { createPost } from '../../lib/callAPIClient/PostAPI';
 
 const Create = () => {
 
@@ -15,27 +16,18 @@ const Create = () => {
   const [uploading, setUploading] = useState(false);
 
   const [form, setForm] = useState({
-    title: '',
-    video: null,
-    thumbnail: null,
-    prompt: ''
+    content: '',
+    media: null,
+    communityId: null,
   });
 
-  const openPicker = async (selectType) => {
+  const openPicker = async () => {
     const result = await DocumentPicker.getDocumentAsync({
-      type: selectType === 'image' 
-        ? ['image/png', 'image/jpg', 'image/jpeg']
-        : ['video/mp4', 'video/gif']
+      type: ['image/png', 'image/jpg', 'image/jpeg', 'video/mp4', 'video/gif']
     })
 
     if(!result.canceled) {
-      if (selectType === 'image') {
-        setForm({...form, thumbnail: result.assets[0] })
-      }
-
-      if (selectType === 'video') {
-        setForm({...form, video: result.assets[0] })
-      }
+      setForm({...form, media: result.assets[0] })
     }
     else {
       setTimeout(() => {
@@ -45,16 +37,14 @@ const Create = () => {
   }
 
   const submit = async () => {
-    if( !form.title || !form.prompt || !form.video || !form.thumbnail) {
+    if( !form.content || !form.media) {
       return Alert.alert('Please fill in all the fields');
     }
 
     setUploading(true)
     
     try {
-      await createVideo({
-        ...form, userId: user.$id
-      })
+      await createPost(form);
 
       Alert.alert('Success', 'Post uploaded successfully');
       router.push('/home');
@@ -77,20 +67,20 @@ const Create = () => {
     <SafeAreaView className='bg-lightBackground h-full'>
       <ScrollView className='px-4 my-6'>
         <Text className='pt-2 text-2xl text-lightText font-semibold'>
-          Upload video
+          Upload post
         </Text>
         <FormField
-          title="Video Title"
-          value={form.title}
-          placeholder="Give your video a catch title..."
-          handleChangeText={(e) => setForm({...form, title: e})}
+          title="Post content"
+          value={form.content}
+          placeholder="Give your post a catch content..."
+          handleChangeText={(e) => setForm({...form, content: e})}
           otherStyles="mt-5 text-black"
         />
         <View className='mt-7 space-y-2'>
           <Text className='text-base text-gray-600 font-pmedium'>
-            Upload Video
+            Upload media
           </Text>
-          <TouchableOpacity onPress={() => openPicker('video')} >
+          <TouchableOpacity onPress={() => openPicker()} >
             {form.video ? (
               <Video
                 source={{uri: form.video.uri}}
@@ -117,9 +107,9 @@ const Create = () => {
               Thumbnail Image
             </Text>
             <TouchableOpacity onPress={() => openPicker('image')}>
-              {form.thumbnail ? (
+              {form.media ? (
                 <Image
-                  source={{uri: form.thumbnail.uri}}
+                  source={{uri: form.media.uri}}
                   className='w-full h-64 rounded-2xl'
                   resizeMode='cover'
                 />
