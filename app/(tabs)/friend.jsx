@@ -33,7 +33,7 @@ const Friend = () => {
       >
         <SearchInput otherStyles={'p-2'}
           placeholder="Search for friend"
-          path='/searchFriend2'
+          path='/searchFriend'
         />
         {/* danh sách lời mời đã nhận */}
         <FlatList

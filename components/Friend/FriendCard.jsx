@@ -4,7 +4,6 @@ import CustomButton from '../CustomButton'
 import { addFriend, removeAddFriend } from '../../lib/callAPIClient/friendAPI'
 
 const FriendCard = ({ person, status = false }) => {
-
     const [isAdded, setIsAdded] = useState(status);
     const onAddFriend = async () => {
         try {

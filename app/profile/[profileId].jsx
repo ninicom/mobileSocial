@@ -14,6 +14,7 @@ import { getUser } from '../../lib/callAPIClient/userAPI'
 const UserProfile = () => {
     const profileId = useLocalSearchParams();
     const { data: user, refech: refechUser } = useAppwrite(() => getUser(profileId));
+    const { data: isFriend, refech: refechIsFriend } = useAppwrite(() => isFriend(profileId));
     const renderListHeader = useCallback(() => (
         <View className='w-full justify-center items-center mt-6 mb-2 px-4'>
             <TouchableOpacity
