@@ -43,11 +43,12 @@ export default function TabViewExample() {
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
+    { key: 'testapi', icon: icon.bookmark },
     { key: 'home', icon: icon.home },
     { key: 'chat', icon: icon.chat },
     { key: 'create', icon: icon.plus },
     { key: 'friend', icon: icon.friends },
-    { key: 'profile', icon: icon.profile },
+    { key: 'profile', icon: icon.profile }
   ]);
 
   return (

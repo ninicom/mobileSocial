@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Image, Alert } from 'react-native'
-import {React, useState} from 'react'
+import { React, useState } from 'react'
 import FormField from '../../components/FormField'
 import { icons } from '../../constants';
 import { ResizeMode, Video } from 'expo-av';
@@ -18,6 +18,7 @@ const Create = () => {
   const [form, setForm] = useState({
     content: '',
     media: null,
+    mediaType: null,
     communityId: null,
   });
 
@@ -26,8 +27,18 @@ const Create = () => {
       type: ['image/png', 'image/jpg', 'image/jpeg', 'video/mp4', 'video/gif']
     })
 
-    if(!result.canceled) {
-      setForm({...form, media: result.assets[0] })
+    if (!result.canceled) {
+      setForm({ ...form, media: result.assets[0] });
+      if (form.media) {
+        form.mediaType = 'unknown';
+        if (form.media.mimeType.startsWith('image/')) {
+          form.mediaType = 'Image';
+        } else if (form.media.mimeType.startsWith('video/')) {
+          form.mediaType = 'video';
+        } else if (form.media.mimeType.startsWith('audio/')) {
+          form.mediaType = 'Audio';
+        }
+      }
     }
     else {
       setTimeout(() => {
@@ -37,26 +48,32 @@ const Create = () => {
   }
 
   const submit = async () => {
-    if( !form.content || !form.media) {
+    if (!form.content || !form.media) {
       return Alert.alert('Please fill in all the fields');
     }
 
     setUploading(true)
-    
-    try {
-      await createPost(form);
 
-      Alert.alert('Success', 'Post uploaded successfully');
-      router.push('/home');
+    try {
+      var isSuccess = await createPost(form);
+      if(isSuccess){
+        Alert.alert('Success', 'Post uploaded successfully');
+        router.push('/home');
+      }
+      else {
+        Alert.alert('Failed','Post uploaded failed')
+      }
+      
     } catch (error) {
-      Alert.alert('Error', error);
-      console.log('Upload error:', error);
+      //Alert.alert(error);
+      Alert.alert('Failed','Post uploaded failed')
+      console.log(error);
     } finally {
       setForm({
-        title: '',
-        video: null,
-        thumbnail: null,
-        prompt: ''
+        content: '',
+        media: null,
+        mediaType: null,
+        communityId: null,
       });
 
       setUploading(false);
@@ -73,7 +90,7 @@ const Create = () => {
           title="Post content"
           value={form.content}
           placeholder="Give your post a catch content..."
-          handleChangeText={(e) => setForm({...form, content: e})}
+          handleChangeText={(e) => setForm({ ...form, content: e })}
           otherStyles="mt-5 text-black"
         />
         <View className='mt-7 space-y-2'>
@@ -81,16 +98,23 @@ const Create = () => {
             Upload media
           </Text>
           <TouchableOpacity onPress={() => openPicker()} >
-            {form.video ? (
-              <Video
-                source={{uri: form.video.uri}}
-                className='w-full h-64 rounded-2xl'
-                useNativeControls
-                shouldPlay = {true}
-                resizeMode={ResizeMode.CONTAIN}
-                isLooping
-                isMuted={true}
-              />
+            {form.media ? (
+              (form.mediaType == 'Video') ? (
+                <Video
+                  source={{ uri: form.media.uri }}
+                  className='w-full h-64 rounded-2xl'
+                  useNativeControls
+                  shouldPlay={true}
+                  resizeMode={ResizeMode.CONTAIN}
+                  isLooping
+                  isMuted={true}
+                />
+              ) : (
+                <Image
+                  source={{ uri: form.media.uri }}
+                  className='w-full h-64 rounded-2xl'
+                />
+              )
             ) : (
               <View className='w-full h-40 px-4 bg-gray-200 rounded-2xl justify-center items-center'>
                 <View className='w-14 h-14 border border-dashed border-secondary-100 justify-center items-center'>
@@ -102,39 +126,8 @@ const Create = () => {
               </View>
             )}
           </TouchableOpacity>
-          <View className='mt-7 space-y-2'>   
-            <Text className='text-base text-gray-600 font-pmedium'>
-              Thumbnail Image
-            </Text>
-            <TouchableOpacity onPress={() => openPicker('image')}>
-              {form.media ? (
-                <Image
-                  source={{uri: form.media.uri}}
-                  className='w-full h-64 rounded-2xl'
-                  resizeMode='cover'
-                />
-              ) : (
-                <View className='w-full h-16 px-4 bg-lightPrimary rounded-2xl justify-center items-center flex-row space-x-2'>
-                    <Image source={icons.upload}
-                      resizeMode='contain'
-                      className='w-5 h-5'
-                    />
-                    <Text className='text-sm text-darkText font-psemibold'>
-                      Choose a file
-                    </Text>
-                </View>
-              )}
-            </TouchableOpacity>         
-          </View>
-          <FormField
-            title="AI Prompt"
-            value={form.prompt}
-            placeholder="The prompt you use to this video"
-            handleChangeText={(e) => setForm({...form, prompt: e})}
-            otherStyles="mt-17 text-white"
-          />
         </View>
-        <CustomButton 
+        <CustomButton
           title='Submit & Publish'
           handlePress={submit}
           containerStyles='mt-7'

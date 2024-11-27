@@ -8,12 +8,12 @@ import { getAllPosts, getLatestPosts } from '../../lib/appwrite'
 import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
 import PostCard from '../../components/PostCard'
+import { getNewPost } from '../../lib/callAPIClient/PostAPI'
 
 const Home = () => {
   
-  const { data:posts, refech } = useAppwrite(getAllPosts);
+  const { data:posts, refech } = useAppwrite(() => getNewPost(1,10));
   const { data:lastedPosts} = useAppwrite(getLatestPosts);
-
   const renderListHeader = useCallback(() => (
     <View className="w-full pt-6 px-4 space-y-6 flex-col">
       <View className="justify-between items-start flex-row md-6">
@@ -61,10 +61,10 @@ const Home = () => {
   return (
     <SafeAreaView className="bg-lightBackground h-full">
       <FlatList 
-        data={posts}
+        data={posts.post}
         keyExtractor={(item) => item.$id}
         renderItem={({item}) => (
-          <PostCard video={item} />
+          <PostCard post={item} />
         )}
         ListHeaderComponent={renderListHeader}
         // nếu flat list rỗng sẽ hiển thị phần nội dung này thay cho flat list

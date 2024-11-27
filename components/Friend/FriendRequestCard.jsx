@@ -4,22 +4,22 @@ import CustomButton from '../CustomButton'
 import { acceptFriend, declineFriend } from '../../lib/callAPIClient/friendAPI'
 import { getUser } from '../../lib/callAPIClient/userAPI'
 
-const FriendRequestCard = ({userId}) => {
+const FriendRequestCard = ({ userId }) => {
     const [person, setPerson] = useState(null);
     const [status, setStatus] = useState('');
 
     useEffect(() => {
         const fetchUser = async () => {
-          const userResponse = await getUser(userId);
-          if (userResponse && userResponse.user) {
-            setPerson(userResponse.user);
-          } else {
-            // Xử lý trường hợp không tìm thấy người dùng
-            Alert.alert('Error', 'User not found');
-          }
+            const userResponse = await getUser(userId);
+            if (userResponse && userResponse.user) {
+                setPerson(userResponse.user);
+            } else {
+                // Xử lý trường hợp không tìm thấy người dùng
+                Alert.alert('Error', 'User not found');
+            }
         };
         fetchUser();
-      }, [userId]);
+    }, [userId]);
 
     if (!person) {
         return (
@@ -28,7 +28,7 @@ const FriendRequestCard = ({userId}) => {
             </View>
         );
     }
-    
+
 
     const onAcceptFriend = async () => {
         try {

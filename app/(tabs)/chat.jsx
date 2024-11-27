@@ -1,5 +1,6 @@
-import { View, Text, SafeAreaView, Image, TouchableOpacity, FlatList, RefreshControl } from 'react-native'
+import { View, Text, Image, TouchableOpacity, FlatList, RefreshControl } from 'react-native'
 import { React, useState } from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context';
 import EmptyState from '../../components/EmptyState'
 import { useGlobalContext } from '../../context/GlobalProvaider';
 import FormField from '../../components/FormField';
@@ -24,7 +25,7 @@ const Chat = () => {
 
   return (
     <SafeAreaView
-      className='h-full pr-3 pl-3 w-full pt-7 bg-white'
+      className='h-full pr-3 pl-3 w-full bg-white'
     >
       <View
         className='flex-row w-full h-20 justify-center items-center space-x-2'
@@ -33,7 +34,7 @@ const Chat = () => {
           className='w-12 h-12 border border-blue-300 rounded-lg justify-center items-center mr-2'
         >
           <Image
-            source={{ uri: user.user?.avatar }}
+            source={{ uri: user?.avatar }}
             className='w-[90%] h-[90%] rounded-lg'
             resizeMode='cover'
           />

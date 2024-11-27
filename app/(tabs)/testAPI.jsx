@@ -5,6 +5,7 @@ import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 import { createUser, getCurrentUser, getFriendSuggestions } from '../../lib/apiClient'
 import { Alert } from 'react-native'
+import { getNewPost } from '../../lib/callAPIClient/PostAPI'
 
 const testAPI = () => {
 
@@ -28,8 +29,8 @@ const testAPI = () => {
     const onget = async () => {
         try {
             //const response = await createUser(email, phone, password, userName);
-            const currentUser = await getFriendSuggestions();
-            console.log('curent user', currentUser);
+            const currentUser = await getNewPost();
+            console.log(currentUser.post);
         }
         catch (e) {
             Alert.alert(e.message);
