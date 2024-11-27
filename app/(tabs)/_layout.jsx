@@ -20,9 +20,10 @@ const renderScene = SceneMap({
   testapi: TestAPI,
 });
 
-const renderTabBar = props => (
+const renderTabBar = ({ key, ...restProps }) => (
   <TabBar
-    {...props}
+    key={key}
+    {...restProps}
     renderIcon={({ route, focused, color }) => (
       <Image
         source={route.icon}
@@ -53,19 +54,19 @@ export default function TabViewExample() {
 
   return (
     <SafeAreaView className='h-full'>
-        <StatusBar 
-                backgroundColor='#FFFFFF'
-                barStyle='dark-content'
-                hidden={false}
-        />
-        <TabView
-            navigationState={{ index, routes }}
-            renderScene={renderScene}
-            renderTabBar={renderTabBar}
-            onIndexChange={setIndex}
-            initialLayout={{ width: layout.width }}      
-            tabBarPosition='bottom'              
-        />
+      <StatusBar 
+        backgroundColor='#FFFFFF'
+        barStyle='dark-content'
+        hidden={false}
+      />
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        renderTabBar={renderTabBar}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}      
+        tabBarPosition='bottom'              
+      />
     </SafeAreaView>
   );
 }
