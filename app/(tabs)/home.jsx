@@ -62,7 +62,7 @@ const Home = () => {
     <SafeAreaView className="bg-lightBackground h-full">
       <FlatList 
         data={posts.post}
-        keyExtractor={(item) => item.$id}
+        keyExtractor={(item) => item._id}
         renderItem={({item}) => (
           <PostCard post={item} />
         )}

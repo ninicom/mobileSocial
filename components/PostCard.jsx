@@ -10,7 +10,7 @@ import { getUser } from '../lib/callAPIClient/userAPI'
 
 const PostCard = ({ post }) => {
     const [author, setAuthor] = useState(null)
-    var avatar = '';
+    var avatar = 'http://192.168.1.154:3000/uploads/1732679542370-664186079.jpg';
     var headline = '';
     var byline = '';
     if (!post) {
