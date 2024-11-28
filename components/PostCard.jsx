@@ -2,14 +2,18 @@ import { View, Text, Image, Touchable } from 'react-native'
 import { React, useState, useEffect } from 'react'
 import { icons, images } from '../constants'
 import { TouchableOpacity } from 'react-native'
-import { ResizeMode, Video, resizeMode, allowsFullscreen } from 'expo-av'
+import { ResizeMode } from 'expo-av'
+import { useEvent } from 'expo';
+import { useVideoPlayer, VideoView } from 'expo-video';
 import { formatDate, timeSinceMessage } from '../lib/formatDate'
 import { shortenText } from '../lib/textUtils'
 import { router, usePathname } from 'expo-router'
 import { getUser } from '../lib/callAPIClient/userAPI'
 
 const PostCard = ({ post }) => {
-    const [author, setAuthor] = useState(null)
+    const [author, setAuthor] = useState(null);
+    const [isLiked, setIsLiked] = useState(false);
+
     var avatar = 'http://192.168.1.154:3000/uploads/1732679542370-664186079.jpg';
     var headline = '';
     var byline = '';
@@ -37,6 +41,12 @@ const PostCard = ({ post }) => {
     const mediaPath = post.mediaDetails.filepath;
     const isCommunityPost = post.IsCommunityPost;
 
+    const player = useVideoPlayer(mediaPath, player => {
+        player.loop = false;
+        player.pause();
+    });
+
+    const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing });
     if (isCommunityPost) {
         avatar = 'http://192.168.1.154:3000/uploads/1732679542370-664186079.jpg';
         headline = 'group';
@@ -48,12 +58,33 @@ const PostCard = ({ post }) => {
         }
         byline = time;
     }
-    const [isLiked, setIsLiked] = useState(false);
 
     const pathname = usePathname();
 
     const renderView = () => {
-        
+        if (mediaType == 'Image') {
+            return (
+                <Image
+                    source={{ uri: mediaPath }}
+                    className="w-full rounded-xl mt-3 relative justify-center items-center bg-white/10"
+                    height={360}
+                    resizeMode={ResizeMode.COVER}
+                    allowsFullscreen={true}
+                />
+            )
+        } else if (mediaType == 'video') {
+            return (
+                <VideoView
+                    className="w-full rounded-xl mt-3 relative justify-center items-center bg-white/10"
+                    height={360}
+                    player={player}
+                    allowsFullscreen
+                    allowsPictureInPicture
+                />
+            )
+        } else {
+            return <></>
+        }
     }
 
     onclickLike = () => {
@@ -105,13 +136,7 @@ const PostCard = ({ post }) => {
             <Text className='w-full'>
                 {content}
             </Text>
-            <Image
-                source={{ uri: mediaPath }}
-                className="w-full rounded-xl mt-3 relative justify-center items-center bg-white/10"
-                height={360}
-                resizeMode={ResizeMode.COVER}
-                allowsFullscreen={true}
-            />
+            {renderView()}
             <View className='h-[50px] w-full justify-center items-center flex-row border-b border-gray-300'>
 
                 {isLiked ? (

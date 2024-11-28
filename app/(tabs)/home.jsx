@@ -11,7 +11,6 @@ import PostCard from '../../components/PostCard'
 import { getNewPost } from '../../lib/callAPIClient/PostAPI'
 
 const Home = () => {
-  
   const { data:posts, refech } = useAppwrite(() => getNewPost(1,10));
   const { data:lastedPosts} = useAppwrite(getLatestPosts);
   const renderListHeader = useCallback(() => (
@@ -43,7 +42,7 @@ const Home = () => {
           Lasted video
         </Text>
         <View className='w-full h-75'>
-         <Trending post={lastedPosts} />
+         {/*<Trending post={lastedPosts} />*/}
         </View>        
       </View>  
     </View>

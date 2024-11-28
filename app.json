@@ -14,14 +14,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "package" : "com.quyenstudy.study"
+      "package": "com.quyenstudy.study"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package" : "com.quyenstudy.study"
+      "package": "com.quyenstudy.study"
     },
     "web": {
       "bundler": "metro",
@@ -29,7 +29,8 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-video"
     ],
     "experiments": {
       "typedRoutes": true
