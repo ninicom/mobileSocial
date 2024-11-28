@@ -23,16 +23,6 @@ const renderScene = SceneMap({
 const renderTabBar = props => (
   <TabBar
     {...props}
-    renderIcon={({ route, focused, color }) => (
-      <Image
-        source={route.icon}
-        style={{
-          width: 24,
-          height: 24,
-          tintColor: focused ? '#93c5fd' : '#C8CACD',
-        }}
-      />
-    )}
     showLabel={false}
     indicatorStyle={{ backgroundColor: '#93c5fd', top: 0 }}
     style={{ backgroundColor: '#FFFFFF', height: 50 }}
@@ -48,7 +38,6 @@ export default function TabViewExample() {
     { key: 'create', icon: icon.plus },
     { key: 'friend', icon: icon.friends },
     { key: 'profile', icon: icon.profile },
-    { key: 'testapi', icon: icon.bookmark },
   ]);
 
   return (
@@ -60,6 +49,18 @@ export default function TabViewExample() {
         />
         <TabView
             navigationState={{ index, routes }}
+            commonOptions={{
+              icon: ({ route, focused, color }) => (
+                <Image
+                  source={route.icon}
+                  style={{
+                    width: 24,
+                    height: 24,
+                    tintColor: focused ? '#93c5fd' : '#C8CACD',
+                  }}
+                />
+              ),
+            }}
             renderScene={renderScene}
             renderTabBar={renderTabBar}
             onIndexChange={setIndex}
