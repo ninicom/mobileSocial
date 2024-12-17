@@ -9,10 +9,13 @@ import { formatDate, timeSinceMessage } from '../lib/formatDate'
 import { shortenText } from '../lib/textUtils'
 import { router, usePathname } from 'expo-router'
 import { getUser } from '../lib/callAPIClient/userAPI'
+import { likePost, unLikePost } from '../lib/callAPIClient/PostAPI'
 
 const PostCard = ({ post }) => {
+
     const [author, setAuthor] = useState(null);
-    const [isLiked, setIsLiked] = useState(false);
+    const [isLiked, setIsLiked] = useState(post.isLiked);
+    const [postlike, setPostlike] = useState(post.likeCount)
 
     var avatar = 'http://192.168.1.154:3000/uploads/1732679542370-664186079.jpg';
     var headline = '';
@@ -20,7 +23,6 @@ const PostCard = ({ post }) => {
     if (!post) {
         return (<></>);
     };
-
     useEffect(() => {
         const fetchUser = async () => {
             const userResponse = await getUser(post.Author);
@@ -90,19 +92,40 @@ const PostCard = ({ post }) => {
     onclickLike = () => {
         setIsLiked(!isLiked);
         // do something
+        if (isLiked) {
+            setPostlike(postlike - 1);
+            try {
+                var statusLike = Promise.all(unLikePost(post._id));
+                if (!statusLike) {
+                    throw new Error('Like thất bại');
+                }
+            } catch (error) {
+                setPostlike(postlike + 1);
+                setIsLiked(isLiked);
+                console.log('like error', error);
+            }
+        }
+        else {
+            setPostlike(postlike + 1);
+            try {
+                var statusLike = Promise.all(likePost(post._id));
+                if (!statusLike) {
+                    throw new Error('unLike thất bại');
+                }
+            } catch (error) {
+                setPostlike(postlike - 1);
+                setIsLiked(isLiked);
+                console.log('like error', error);
+            }
+        }
     }
 
     onclickComment = () => {
-        if (!username) {
-            Alert.alert('Missing query', 'Please input to search results across database');
+        if (pathname.startsWith('/post')) {
+            router.setParams({ postId });
         }
         else {
-            if (pathname.startsWith('/post')) {
-                router.setParams({ postId });
-            }
-            else {
-                router.push(`/post/${postId}`);
-            }
+            router.push(`/post/${postId}`);
         }
     }
 
@@ -145,7 +168,11 @@ const PostCard = ({ post }) => {
                             className='w-[24px] h-[24px]'
                             tintColor={'#93c5fd'}
                         />
-                        <Text className='text-likeactive'>Like</Text>
+                        {postlike > 0 ? (
+                            <Text className='text-gray-600'>{postlike}</Text>
+                        ) : (
+                            <Text className='text-gray-600'>Like</Text>
+                        )}
                     </TouchableOpacity>
 
                 ) : (
@@ -154,7 +181,11 @@ const PostCard = ({ post }) => {
                             className='w-[24px] h-[24px]'
                             tintColor={'#4b5563'}
                         />
-                        <Text className='text-'>Like</Text>
+                        {postlike > 0 ? (
+                            <Text className='text-gray-600'>{postlike}</Text>
+                        ) : (
+                            <Text className='text-gray-600'>Like</Text>
+                        )}
                     </TouchableOpacity>
                 )}
 

@@ -57,7 +57,7 @@ describe('FriendCard Component', () => {
     
     const mockAlert = jest.spyOn(Alert, 'alert');
     const { getByText } = render(<FriendCard person={mockPerson} />);
-    const addButton = getByText('Add friend');
+    const addButton = getByText('Add friend1');
     
     fireEvent.press(addButton);
     

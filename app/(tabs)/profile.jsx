@@ -20,9 +20,9 @@ const Profile = () => {
     router.replace('sign-in');
   }
   const renderListHeader = useCallback(() => (
-    <View className='w-full justify-center items-center mt-6 mb-2 px-4'>
+    <View className='w-full justify-center items-center mb-2 pt-2'>
       <TouchableOpacity
-        className='w-full items-end mt-6 mb-8 px-4'
+        className='w-full items-end mb-8 px-4'
         onPress={logout}
       >
         <Image

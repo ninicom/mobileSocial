@@ -43,7 +43,7 @@ const Home = () => {
               Lasted video
             </Text>
             <View className='w-full h-75'>
-              {/*<Trending post={lastedPosts} />*/}
+              <Trending post={lastedPosts} />
             </View>
           </View>
         ) : (
@@ -65,7 +65,7 @@ const Home = () => {
   return (
     <SafeAreaView className="bg-lightBackground h-full">
       <FlatList
-        data={posts.post}
+        data={posts}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <PostCard post={item} />
