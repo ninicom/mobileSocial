@@ -11,10 +11,10 @@ import PostCard from '../../components/PostCard'
 import { getNewPost } from '../../lib/callAPIClient/PostAPI'
 
 const Home = () => {
-  const { data:posts, refech } = useAppwrite(() => getNewPost(1,10));
-  const { data:lastedPosts} = useAppwrite(getLatestPosts);
+  const { data: posts, refech } = useAppwrite(() => getNewPost(1, 10));
+  const { data: lastedPosts } = useAppwrite(getLatestPosts);
   const renderListHeader = useCallback(() => (
-    <View className="w-full pt-6 px-4 space-y-6 flex-col">
+    <View className="w-full pb-2 px-4 space-y-6 flex-col">
       <View className="justify-between items-start flex-row md-6">
         <View>
           <Text className="font-pmedium text-sm text-gray-600">
@@ -31,25 +31,30 @@ const Home = () => {
             resizeMode='contain'
           />
         </View>
-      </View>      
-  
-      <SearchInput 
-        placeholder="Search for a video topic"
-      />   
+      </View>
 
-      <View className="w-full flex-1 pb-8">
-        <Text className="text-base text-gray-600 pb-5">
-          Lasted video
-        </Text>
-        <View className='w-full h-75'>
-         {/*<Trending post={lastedPosts} />*/}
-        </View>        
-      </View>  
+      <SearchInput
+        placeholder="Search for a post topic"
+      />
+      {
+        (lastedPosts) ? (
+          <View className="w-full flex-1 pb-8">
+            <Text className="text-base text-gray-600 pb-5">
+              Lasted video
+            </Text>
+            <View className='w-full h-75'>
+              {/*<Trending post={lastedPosts} />*/}
+            </View>
+          </View>
+        ) : (
+          <></>
+        )
+      }
     </View>
   ), [images.logoSmall, lastedPosts]);
 
 
-  const [refreshing, setRefreshing] = useState(false)  
+  const [refreshing, setRefreshing] = useState(false)
   const onRefresh = async () => {
     setRefreshing(true);
     // re call the video -> if any new video appeard
@@ -59,22 +64,22 @@ const Home = () => {
 
   return (
     <SafeAreaView className="bg-lightBackground h-full">
-      <FlatList 
+      <FlatList
         data={posts.post}
         keyExtractor={(item) => item._id}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <PostCard post={item} />
         )}
         ListHeaderComponent={renderListHeader}
         // nếu flat list rỗng sẽ hiển thị phần nội dung này thay cho flat list
         ListEmptyComponent={() => (
-          <EmptyState 
+          <EmptyState
             title="No Videos Found"
             subtitle="Be the fist of one to upload video"
           />
         )}
 
-        refreshControl={<RefreshControl 
+        refreshControl={<RefreshControl
           refreshing={refreshing} onRefresh={onRefresh}
         />}
       />
