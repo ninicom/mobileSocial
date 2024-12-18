@@ -8,16 +8,21 @@ import { icons } from '../../constants';
 import ChatCard from '../../components/ChatCard';
 import useAppwrite from '../../lib/useAppwrite';
 import { getAllChats } from '../../lib/offlineStorage';
+import { getChats } from '../../lib/callAPIClient/ChatAPI';
 
 const Chat = () => {
 
   const { user } = useGlobalContext();
   const { data: chats, refech } = useAppwrite(getAllChats);
+  const { data: chat2s, refech: chat2srf} = useAppwrite(getChats);
+
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = async () => {
     setRefreshing(true);
     // re call the video -> if any new video appeard 
     await refech();
+    await chat2srf();
+    console.log(chat2s);
     setRefreshing(false);
   }
 

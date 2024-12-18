@@ -46,7 +46,7 @@ const Post = () => {
     }
 
     return (
-        <SafeAreaView className='h-full'>
+        <SafeAreaView className='h-full bg-white'>
             <ScrollView>
                 <PostCard post={post} />
                 <FlatList

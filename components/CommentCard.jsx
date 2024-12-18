@@ -69,7 +69,7 @@ const CommentCard = ({ comment }) => {
         />
       </View>
       <View className='pl-2 pr-1 flex-1'>
-        <View className='bg-gray-300 rounded-lg pr-2 pl-2 pt-1 pb-1 space-y-1 w-full'>
+        <View className='bg-gray-200 rounded-lg pr-2 pl-2 pt-1 pb-1 space-y-1 w-full'>
           <Text className='font-semibold'>{userComment.username}</Text>
           <Text>{content}</Text>
         </View>

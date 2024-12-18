@@ -1,5 +1,6 @@
 import { View, Text, SafeAreaView, FlatList, Image, RefreshControl } from 'react-native'
 import { useState, React, useCallback } from 'react'
+import { useFocusEffect } from 'expo-router'
 import images from "../../constants/images"
 import SearchInput from '../../components/SearchInput'
 import Trending from '../../components/Trending'
@@ -61,6 +62,12 @@ const Home = () => {
     await refech();
     setRefreshing(false);
   }
+  // Sử dụng useFocusEffect để làm mới dữ liệu khi màn hình Home được focus 
+  useFocusEffect( 
+    useCallback(() => { 
+      refech(); 
+    }, []) 
+  );
 
   return (
     <SafeAreaView className="bg-lightBackground h-full">
@@ -80,8 +87,11 @@ const Home = () => {
         )}
 
         refreshControl={<RefreshControl
-          refreshing={refreshing} onRefresh={onRefresh}
+          refreshing={refreshing} 
+          onRefresh={onRefresh}
         />}
+        // buộc flatlist thay đổi khi post thay đổi
+        extraData={posts}
       />
     </SafeAreaView>
   )

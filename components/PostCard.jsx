@@ -33,8 +33,10 @@ const PostCard = ({ post }) => {
                 Alert.alert('Error', 'User not found');
             }
         };
+        setIsLiked(post.isLiked); 
+        setPostlike(post.likeCount);
         fetchUser();
-    }, []);
+    }, [post]);
 
     const postId = post._id;
     const mediaType = post.mediaDetails.MediaType;
