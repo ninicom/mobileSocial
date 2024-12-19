@@ -56,7 +56,7 @@ const Friend = () => {
           className='p-2 w-full'
           scrollEnabled={false}
           data={listRequestFriend}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => `listRequestFriend${item._id}`}
           ListHeaderComponent={(
             <Text className='text-lg'>Lời mời kết bạn đã gửi</Text>
           )}
@@ -73,7 +73,7 @@ const Friend = () => {
           // thêm scroll enabled để các phần tử không cuộn riếng lẻ
           scrollEnabled={false}
           data={friendSuggestions}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => `friendSuggestions${item._id}`}
           ListHeaderComponent={() => (
             <Text className='text-lg'>Gợi ý kết bạn</Text>
           )}

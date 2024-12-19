@@ -7,6 +7,7 @@ import { useLocalSearchParams } from 'expo-router'
 import { searchFriends } from '../../lib/callAPIClient/friendAPI'
 import FriendRequestCard from '../../components/Friend/FriendRequestCard'
 import FriendCard from '../../components/Friend/FriendCard'
+import FriendMessageCard from '../../components/Friend/FriendMessageCard'
 
 const Search = () => {
 
@@ -21,6 +22,7 @@ const Search = () => {
   const isNullOrderFriends = !(Array.isArray(data.orderFriends) && data.orderFriends.length === 0);
   const isNullRequestFriends = !(Array.isArray(data.requestFriends) && data.requestFriends.length === 0);
 
+  
 
   return (
     <SafeAreaView className="bg-white h-full">
@@ -59,7 +61,7 @@ const Search = () => {
                 <Text className='text-lg'>Bạn bè</Text>
               )}
               renderItem={({ item }) => (
-                <FriendMessageCard userId={item} />
+                <FriendMessageCard person={item} />
               )}
               ListEmptyComponent={(
                 <Text className='pl-2'>Không tìm thấy bạn bè nào</Text>
@@ -73,7 +75,7 @@ const Search = () => {
               className='p-2 w-full'
               scrollEnabled={false}
               data={data.requestFriends}
-              keyExtractor={(item) => item._id}
+              keyExtractor={(item) => `requestFriends${item._id}`}
               ListHeaderComponent={(
                 <Text className='text-lg'>Lời mời kết bạn đã gửi</Text>
               )}
@@ -92,7 +94,7 @@ const Search = () => {
               className='p-2 w-full'
               scrollEnabled={false}
               data={data.orderFriends}
-              keyExtractor={(item) => item._id}
+              keyExtractor={(item) => `orderFriends${item._id}`}
               ListHeaderComponent={(
                 <Text className='text-lg'>Lời mời kết bạn đã nhận</Text>
               )}
@@ -111,7 +113,7 @@ const Search = () => {
               className='p-2 w-full'
               scrollEnabled={false}
               data={data.nonFriends}
-              keyExtractor={(item) => item._id}
+              keyExtractor={(item) => `nonFriends${item._id}`}
               ListHeaderComponent={(
                 <Text className='text-lg'>Người dùng</Text>
               )}

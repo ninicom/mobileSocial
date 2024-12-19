@@ -1,143 +1,174 @@
-import { View, Text, FlatList, TouchableOpacity, Image, TextInput, KeyboardAvoidingView, Platform  } from 'react-native'
-import { React, useEffect, useCallback, useRef } from 'react'
-import SearchInput from '../../components/SearchInput'
-import EmptyState from '../../components/EmptyState'
-import { searchPosts } from '../../lib/appwrite'
-import useAppwrite from '../../lib/useAppwrite'
-import VideoCard from '../../components/VideoCard'
-import { router, useLocalSearchParams } from 'expo-router'
-import { icons } from '../../constants'
-import { getChatMessages } from '../../lib/offlineStorage'
-import { useGlobalContext } from '../../context/GlobalProvaider'
-import { shortenText } from '../../lib/textUtils'
-import FormField from '../../components/FormField'
-import MessageInput from '../../components/MessageInput'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import MessageCard from '../../components/MessageCard'
+import { View, Text, FlatList, TouchableOpacity, Image, Alert } from 'react-native';
+import { React, useEffect, useCallback, useState } from 'react';
+import EmptyState from '../../components/EmptyState';
+import useAppwrite from '../../lib/useAppwrite';
+import { router, useLocalSearchParams } from 'expo-router';
+import { icons } from '../../constants';
+import { useGlobalContext } from '../../context/GlobalProvaider';
+import { shortenText } from '../../lib/textUtils';
+import MessageInput from '../../components/MessageInput';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import MessageCard from '../../components/MessageCard';
+import { createMessage, getMessages } from '../../lib/callAPIClient/MessageAPI';
+import { getUser } from '../../lib/callAPIClient/userAPI';
 
 const Chat = () => {
-  
   const { chatId } = useLocalSearchParams();
-  const { data, refech } = useAppwrite(() => getChatMessages(chatId));
+  const { data: chat, refech } = useAppwrite(() => getMessages(chatId));
   const { user } = useGlobalContext();
-  const flatListRef = useRef(null);
 
-    const scrollToBottom = () => {
-        flatListRef.current?.scrollToEnd({ animated: false });
+  const [members, setMember] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [chatName, setChatName] = useState('Chat');
+  const [value, setValue] = useState("")
+  const [isGroup, setIsGroup] = useState(false);
+  const [chatpicture, setChatpicture] = useState('https://th.bing.com/th/id/OIP.U0D5JdoPkQMi4jhiriSVsgHaHa?rs=1&pid=ImgDetMain');
+  const [form, setForm] = useState({
+    message: '',
+    data: [],
+  });
+
+
+  useEffect(() => {
+    if (!chat) {
+      // Nếu chat là null, reset các giá trị liên quan và hiển thị thông báo
+      setChatName('Chat');
+      setChatpicture('https://th.bing.com/th/id/OIP.U0D5JdoPkQMi4jhiriSVsgHaHa?rs=1&pid=ImgDetMain');
+      setMessages([]);
+      setMember([]);
+      Alert.alert('Error', 'Chat not found or has been deleted');
+      return;
+    }
+    const fetchUser = async (userId) => {
+      try {
+        const userResponse = await getUser(userId);
+        if (userResponse?.user) {
+          setChatName(shortenText(userResponse.user.username, 15));
+          setChatpicture(userResponse.user.avatar);
+        } else {
+          Alert.alert('Error', 'User not found');
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
     };
 
-    
-  const members = data.members;
-  const messages = data.messages;
-
-  var ChatName = null;
-  var ChatIcon = null;
-
-  if(data.isGroup == true) {
-    ChatName = data.chatName;
-    ChatIcon = data.groupProfile;
-  }
-  else {
-    if(members){
-      members.forEach(member => {
-        if(member.email != user.email) {
-          ChatName = member.username;
-          ChatIcon = member.avatar;
+    // Phân loại Isgroup
+    setIsGroup(chat.Isgroup);
+    if (chat.Isgroup) {
+      setChatName(shortenText(chat.name || 'Unnamed Group', 15));
+      setChatpicture(chat.chatpicture || 'https://th.bing.com/th/id/OIP.U0D5JdoPkQMi4jhiriSVsgHaHa?rs=1&pid=ImgDetMain');
+    } else {
+      chat.members?.forEach((member) => {
+        if (member !== user.userId) {
+          fetchUser(member);
         }
       });
-    }    
+    }
+
+    // Gán giá trị tin nhắn
+    setMessages(chat.messages || []);
+    // Gán thành viên
+    setMember(chat.members || []);
+  }, [chat]);
+
+  const handleChangetext = (text) => {
+    setValue(text)
+    setForm((prevForm) => ({
+      ...prevForm,
+      message: text,
+    }));
   };
 
-  ChatName = shortenText(ChatName, 15);
-  
-  useEffect(() => {
-    if(messages){
-      if (messages.length) {
-        scrollToBottom();
-      }
-    }    
-  }, [messages]);
+  const handleSend = async () => {
+    if (!form.message.trim()) {
+      Alert.alert('Error', 'Message cannot be empty');
+      return;
+    }
+    try {
+      await createMessage(chatId, null, form);
+      console.log('Message sent:', form.message);
+    } catch (error) {
+      console.error('Error sending message:', error);
+    } finally {      
+      setValue('')
+      setForm({
+        message: '',
+        data: [],
+      }); // Reset message field
+    }
+  };
 
-  useEffect(() => {
-    // Scroll to bottom on initial render
-    const timer = setTimeout(() => {
-        scrollToBottom();
-    }, 500);
-    
-    return () => clearTimeout(timer);
-  }, []);
-
-
-   // Hàm renderFooter sử dụng useCallback để tối ưu hóa
-   const renderFooter = useCallback(() => (
-    <></>
-  ), []);
-
+  const renderFooter = useCallback(() => <></>, []);
 
   return (
     <SafeAreaView className="bg-white h-full">
       <View className="px-4 space-x-2 flex-row items-center border-b-[0.5px] pb-1 border-gray-100">
         <TouchableOpacity onPress={router.back}>
-            <Image 
-                source={icons.leftArrow}
-                className="w-5 h-5"
-                resizeMode='contain'
-                tintColor={'#87CEEB'}
-            />
+          <Image
+            source={icons.leftArrow}
+            className="w-5 h-5"
+            resizeMode="contain"
+            tintColor={'#87CEEB'}
+          />
         </TouchableOpacity>
-        <TouchableOpacity className='h-full flex-1 flex-row items-center space-x-2'>
-            <Image 
-              source={{uri:ChatIcon}}
-              className="w-10 h-10 rounded-full"
-              resizeMode='cover'
-            />
-            <Text className='text-base'>
-              {ChatName}
-            </Text>
+        <TouchableOpacity className="h-full flex-1 flex-row items-center space-x-2">
+          <Image
+            source={{ uri: chatpicture }}
+            className="w-10 h-10 rounded-full"
+            resizeMode="cover"
+          />
+          <Text className="text-base">
+            {chatName}
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity >
-          <Image 
+        <TouchableOpacity>
+          <Image
             source={icons.call}
-            className='w-5 h-5'
-            resizeMode='contain'
+            className="w-5 h-5"
+            resizeMode="contain"
             tintColor={'#87CEEB'}
           />
         </TouchableOpacity>
-        <TouchableOpacity >
-          <Image 
+        <TouchableOpacity>
+          <Image
             source={icons.videocall}
-            className='w-6 h-6 m-1'
-            resizeMode='contain'
+            className="w-6 h-6 m-1"
+            resizeMode="contain"
             tintColor={'#87CEEB'}
           />
         </TouchableOpacity>
-        <TouchableOpacity >
-          <Image 
+        <TouchableOpacity>
+          <Image
             source={icons.option}
-            className='w-5 h-5'
-            resizeMode='contain'
+            className="w-5 h-5"
+            resizeMode="contain"
             tintColor={'#87CEEB'}
           />
         </TouchableOpacity>
       </View>
-      <FlatList 
-        ref={flatListRef}
+      <FlatList
         data={messages}
-        keyExtractor={(item) => item.timestamp}
-        renderItem={({item}) => (
-          <MessageCard  message={item}/>
-        )}     
-        // nếu flat list rỗng sẽ hiển thị phần nội dung này thay cho flat list
+        keyExtractor={(item) => item._id || item.id || Math.random().toString()}
+        renderItem={({ item }) => <MessageCard message={item}/>}
         ListEmptyComponent={() => (
-          <EmptyState 
-            title="No Chat Found"
-            subtitle="Make new chat"
+          <EmptyState
+            title="You have no messages yet"
+            subtitle="Let’s start messaging."
+            enableBtn={false}
           />
         )}
-      />      
-      <MessageInput/>
+        inverted // đảo ngược flatlist và hướng cuộn
+      />
+      <MessageInput
+        value={value}
+        form={form}
+        setForm={setForm}
+        handleChangetext={handleChangetext}
+        handleSend={handleSend}
+      />
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default Chat
+export default Chat;

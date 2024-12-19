@@ -2,8 +2,10 @@ import { Alert, Image, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import CustomButton from '../CustomButton'
 import { addFriend, removeAddFriend } from '../../lib/callAPIClient/friendAPI'
+import { router, usePathname } from 'expo-router'
 
 const FriendMessageCard = ({ person }) => {
+    const pathname = usePathname();
     const onChat = async () => {
         try {
             const $id = person._id;
@@ -34,7 +36,7 @@ const FriendMessageCard = ({ person }) => {
                 <CustomButton
                     containerStyles={'h-[30px] w-30 rounded-md'}
                     textStyle={'text-base'}
-                    title={'Add friend'}
+                    title={'Get chat'}
                     handlePress={onChat}
                 />
             </View>

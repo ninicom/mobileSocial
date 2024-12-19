@@ -13,16 +13,13 @@ import { getChats } from '../../lib/callAPIClient/ChatAPI';
 const Chat = () => {
 
   const { user } = useGlobalContext();
-  const { data: chats, refech } = useAppwrite(getAllChats);
-  const { data: chat2s, refech: chat2srf} = useAppwrite(getChats);
-
+  const { data: chats, refech } = useAppwrite(getChats);
+  
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = async () => {
     setRefreshing(true);
     // re call the video -> if any new video appeard 
     await refech();
-    await chat2srf();
-    console.log(chat2s);
     setRefreshing(false);
   }
 
@@ -61,7 +58,7 @@ const Chat = () => {
       </View>
       <FlatList
         data={chats}
-        keyExtractor={(item) => item.$id}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <ChatCard chat={item} />
         )}

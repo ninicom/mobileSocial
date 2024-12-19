@@ -14,11 +14,16 @@ const calculateNumColumns = () => {
 };
 
 
-const MessageInput = ({ value, isLoading = false, handleChangetext, handleSend, chooseFile = true }) => {
-    const [form, setForm] = useState({
-        message: '',
-        data: [],
-    });
+const MessageInput = ({
+    value,
+    isLoading = false,
+    handleChangetext,
+    handleSend,
+    chooseFile = true,
+    form,
+    setForm,
+    isMultiline = true
+}) => {
 
     const [key, setKey] = useState(0);
     const [numColumns, setNumColumns] = useState(calculateNumColumns());
@@ -136,10 +141,11 @@ const MessageInput = ({ value, isLoading = false, handleChangetext, handleSend, 
                 ) : (<></>)
                 }
                 <FormField
-                    isMultiline={true}
+                    isMultiline={isMultiline}
                     value={value}
                     textBoxMinHeight={35}
                     handleChangeText={handleChangetext}
+                    onEnter={handleSend}
                 />
             </View>
             <TouchableOpacity

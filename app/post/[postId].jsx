@@ -13,13 +13,18 @@ const Post = () => {
     const { postId } = useLocalSearchParams();
     const { data: post, refech } = useAppwrite(() => getPost(postId));
     const { data: comments, refech: refechComment } = useAppwrite(() => getComment(postId));
-    const [uploading, setUploading] = useState(false)
-    const [commetText, setCommetText] = useState("")
+    const [uploading, setUploading] = useState(false);
+    const [commetText, setCommetText] = useState("");
+    const [form, setForm] = useState({
+      message: '',
+      data: [],
+    })
     if (!post || post.length == 0) {
         return <></>
     };
     const submit = async () => {
         if (!commetText) {
+            console.log('Please fill in all the fields');
             return Alert.alert('Please fill in all the fields');
         }
 
@@ -28,8 +33,9 @@ const Post = () => {
         try {
             var isSuccess = await createComment(postId, commetText);
             if (isSuccess) {
-                Alert.alert('Success', 'Comment uploaded successfully');
                 await refechComment();
+                console.log('Success', 'Comment uploaded successfully');
+                Alert.alert('Success', 'Comment uploaded successfully');
             }
             else {
                 Alert.alert('Failed', 'Comment uploaded failed')
@@ -52,11 +58,13 @@ const Post = () => {
                 <FlatList
                     className='flex-1 px-2'
                     data={comments}
-                    keyExtractor={(item) => item._id}
+                    keyExtractor={(item) => item._id || item.id || Math.random().toString()}
                     scrollEnabled={false}
                     renderItem={({ item }) => (
                         <CommentCard comment={item} />
                     )}
+                    // buộc flatlist thay đổi khi comments thay đổi
+                    extraData={comments}
                 />
             </ScrollView>
             <MessageInput
@@ -65,6 +73,8 @@ const Post = () => {
                 handleChangetext={(e) => setCommetText(e)}
                 handleSend={submit}
                 isLoading={uploading}
+                form={form}
+                setForm={setForm}
             />
         </SafeAreaView>
     )

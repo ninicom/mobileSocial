@@ -14,6 +14,7 @@ const FormField = ({
     textInputStyle, 
     titleStyle, 
     onsubmit, 
+    onEnter,
     ...props
 }) => {
     
@@ -45,7 +46,14 @@ const FormField = ({
                     onChangeText={handleChangeText}
                     secureTextEntry={title === "Password" && !showPassword}
                     multiline={isMultiline}          
-                    onsubmit={onsubmit}                                         
+                    onsubmit={onsubmit}           
+                    onKeyPress={({ nativeEvent }) => {
+                        if (nativeEvent.key === 'Enter') {
+                            if(onEnter){
+                                onEnter();
+                            }
+                        }
+                    }}                                     
                 />
                 {
                     title === "Password" && (
