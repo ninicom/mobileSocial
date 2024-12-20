@@ -26,8 +26,12 @@ import option from '../assets/icons/option.png';
 import picture from '../assets/icons/insert-picture-icon.png';
 import send from '../assets/icons/send.png';
 import cancel from '../assets/icons/cancel.png';
+import community from '../assets/icons/community.png';
+import radiocheck from '../assets/icons/radio_checked.png'
+import radiouncheck from '../assets/icons/radio_uncheck.png'
 
 export default {
+
   play,
   bookmark,
   home,
@@ -56,4 +60,7 @@ export default {
   picture,
   send,
   cancel,
+  community,
+  radiocheck,
+  radiouncheck,
 };

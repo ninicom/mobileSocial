@@ -8,7 +8,7 @@ import PostCard from '../../components/PostCard'
 import { useLocalSearchParams } from 'expo-router'
 import { RefreshControl } from 'react-native'
 
-const Search = () => {
+const SearchCommunity = () => {
   
   const { query } = useLocalSearchParams();
   const { data:posts, refech } = useAppwrite(() => searchPosts(query));
@@ -22,11 +22,14 @@ const Search = () => {
   }
 
   const renderListHeader = useCallback(() => (
-    <View className="px-4 space-y-6 pb-2">
+    <View className="pt-6 px-4 space-y-6 pb-2">
       <View className="justify-between items-start flex-row md-6">
         <View>
-          <Text className="font-pmedium text-sm text-gray-600 pb-1">
+          <Text className="font-pmedium text-sm text-gray-600">
             Search Results
+          </Text>
+          <Text className="text-2xl font-psemibold text-gray-600">
+            {query}
           </Text>
         </View>
       </View>        
@@ -66,4 +69,4 @@ const Search = () => {
   )
 }
 
-export default Search
+export default SearchCommunity

@@ -64,11 +64,16 @@ const MessageCard = ({ message }) => {
         <View className={`px-2 ${(isCurrent) ? ('items-end') : ('items-start')}`}>
             <View className={`items-end ${(isCurrent) ? ('flex-row') : ('flex-row-reverse')}`}>
                 <View className={`flex-col ${(isCurrent) ? ('items-end') : ('items-start')}`}>
-                    <View className={`items-end ${(isCurrent) ? ('flex-row') : ('flex-row-reverse')}`}>
-                        <Text className={`mb-1 p-2 max-w-xs rounded-md ${(isCurrent) ? ('bg-[#87CEEB] rounded-br-sm text-white') : ('bg-gray-50 rounded-bl-sm')}`}>
-                            {content}
-                        </Text>
-                    </View>
+                    {(content.length > 0) ? (
+                        <View className={`items-end ${(isCurrent) ? ('flex-row') : ('flex-row-reverse')}`}>
+                            <Text className={`mb-1 p-2 max-w-xs rounded-md ${(isCurrent) ? ('bg-[#87CEEB] rounded-br-sm text-white') : ('bg-gray-50 rounded-bl-sm')}`}>
+                                {content}
+                            </Text>
+                        </View>
+                    ) : (
+                        <></>
+                    )}
+
                     <View>
                         <FlatList
                             className='w-64'

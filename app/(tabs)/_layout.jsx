@@ -10,6 +10,7 @@ import Create from './create';
 import Friend from './friend';
 import Profile from './profile';
 import TestAPI from './testAPI';
+import Community from './community';
 
 const renderScene = SceneMap({
   home: Home,
@@ -18,6 +19,7 @@ const renderScene = SceneMap({
   friend: Friend,
   profile: Profile,
   testapi: TestAPI,
+  community: Community,
 });
 
 const renderTabBar = props => (
@@ -37,7 +39,8 @@ export default function TabViewExample() {
     { key: 'chat', icon: icon.chat },
     { key: 'create', icon: icon.plus },
     { key: 'friend', icon: icon.friends },
-    { key: 'profile', icon: icon.profile },
+    //{ key: 'profile', icon: icon.profile },
+    { key: 'community', icon: icon.community},
   ]);
 
   return (

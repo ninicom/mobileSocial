@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, FlatList, RefreshControl } from 'react-native'
-import { React, useState } from 'react'
+import { React, useState, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import EmptyState from '../../components/EmptyState'
 import { useGlobalContext } from '../../context/GlobalProvaider';
@@ -7,6 +7,7 @@ import FormField from '../../components/FormField';
 import { icons } from '../../constants';
 import ChatCard from '../../components/ChatCard';
 import useAppwrite from '../../lib/useAppwrite';
+import { useFocusEffect } from 'expo-router'
 import { getAllChats } from '../../lib/offlineStorage';
 import { getChats } from '../../lib/callAPIClient/ChatAPI';
 
@@ -14,7 +15,7 @@ const Chat = () => {
 
   const { user } = useGlobalContext();
   const { data: chats, refech } = useAppwrite(getChats);
-  
+
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = async () => {
     setRefreshing(true);
@@ -23,6 +24,12 @@ const Chat = () => {
     setRefreshing(false);
   }
 
+  // Sử dụng useFocusEffect để làm mới dữ liệu khi màn hình Home được focus 
+  useFocusEffect(
+    useCallback(() => {
+      refech();
+    }, [])
+  );
 
 
   return (

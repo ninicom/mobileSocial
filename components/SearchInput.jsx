@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native'
 import { icons } from '../constants'
 import { router, usePathname } from 'expo-router'
 
-const SearchInput = ({title, initialQuery, placeholder, otherStyles, path='/search', ...props}) => {
+const SearchInput = ({title, initialQuery, placeholder, otherStyles, maxLength=50, height=16, path='/search', ...props}) => {
     
     const pathname = usePathname();
     const [query, setQuery] = useState(initialQuery || '');
@@ -26,21 +26,22 @@ const SearchInput = ({title, initialQuery, placeholder, otherStyles, path='/sear
 
     return (
         <View
-            className={`"space-y-2" ${otherStyles}` }
+            className={`"space-y-2 " ${otherStyles}` }
         >
             <View
-                className="border-2 border-gray-300 w-full h-16 px-4
+                className="border-2 border-gray-300 w-full px-4
                  bg-lightBackground rounded-2xl
                  focus:border-primary
                  items-center flex-row space-x-4"
             >
                 <TextInput
-                    className='flex-1 text-lightText font-pregular text-base'
+                    className={`flex-1 text-lightText font-pregular text-base h-${height}`}
                     value={query}
                     placeholder={placeholder}
                     placeholderTextColor="#CDCDE0"
                     onChangeText={(e) => setQuery(e)}
                     onSubmitEditing={onSearch}
+                    maxLength={maxLength}
                 />                
                 <TouchableOpacity
                     onPress={onSearch}
@@ -49,6 +50,7 @@ const SearchInput = ({title, initialQuery, placeholder, otherStyles, path='/sear
                         source={icons.search}
                         className='h-5 w-5 '
                         resizeMode='contain'
+                        tintColor={'#CDCDE0'}
                     />
                 </TouchableOpacity>
             </View>

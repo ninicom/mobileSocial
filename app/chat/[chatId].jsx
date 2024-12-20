@@ -81,21 +81,20 @@ const Chat = () => {
   };
 
   const handleSend = async () => {
-    if (!form.message.trim()) {
-      Alert.alert('Error', 'Message cannot be empty');
+    if (!form.message.trim() && form.data.length <= 0) {
       return;
     }
     try {
       await createMessage(chatId, null, form);
-      console.log('Message sent:', form.message);
     } catch (error) {
       console.error('Error sending message:', error);
     } finally {      
-      setValue('')
+      setValue('');
       setForm({
         message: '',
         data: [],
       }); // Reset message field
+      await refech();
     }
   };
 

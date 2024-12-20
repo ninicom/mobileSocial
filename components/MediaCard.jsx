@@ -11,7 +11,6 @@ const MediaCard = ({mediaId}) => {
         const getMedia = async () => {
             const media = await GetMediaDetails(mediaId);
             if (media) {
-                console.log(media)
                 setMediaType(media.MediaType);
                 setmediaPath(media.filepath);
             } else {
@@ -34,7 +33,7 @@ const MediaCard = ({mediaId}) => {
         return (
             <Image
                 source={{ uri: mediaPath }}
-                className="w-full rounded-xl mt-0.5 mb-1 relative justify-center items-center bg-white/10"
+                className="w-full rounded-xl mt-0.5 mb-1 relative justify-center items-center bg-white"
                 height={360}
                 resizeMode={ResizeMode.COVER}
                 allowsFullscreen={true}
@@ -43,7 +42,7 @@ const MediaCard = ({mediaId}) => {
     } else if (mediaType == 'video') {
         return (
             <VideoView
-                className="w-full rounded-xl mt-0.5 mb-1 relative justify-center items-center bg-white/10"
+                className="w-full rounded-xl mt-0.5 mb-1 relative justify-center items-center bg-white"
                 height={360}
                 player={player}
                 allowsFullscreen

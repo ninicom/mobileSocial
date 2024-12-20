@@ -41,6 +41,7 @@ const rootLayout = () => {
           headerTitleAlign: 'center',
         }}
       >
+        {/*Nơi khai báo các screen */}
         <Stack.Screen name="index" options={{headerShown: false}}></Stack.Screen>
         <Stack.Screen name="(auth)" options={{headerShown: false}}></Stack.Screen>
         <Stack.Screen name="(tabs)" options={{headerShown: false}}></Stack.Screen>
@@ -48,6 +49,8 @@ const rootLayout = () => {
         <Stack.Screen name="chat/[chatId]" options={{headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal'}}></Stack.Screen> 
         <Stack.Screen name="post/[postId]" options={{headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal'}}></Stack.Screen> 
         <Stack.Screen name="searchFriend/[query]" options={{headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal'}}></Stack.Screen> 
+        <Stack.Screen name="searchCommunity/[query]" options={{headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal'}}></Stack.Screen> 
+        <Stack.Screen name='(community)' options={{headerShown: false}}></Stack.Screen>
       </Stack>      
       <StatusBar 
           backgroundColor='#FFFFFF'
