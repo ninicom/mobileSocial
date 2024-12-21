@@ -24,7 +24,7 @@ const Friend = () => {
     setRefreshing(false);
   }
   return (
-    <SafeAreaView className='w-full pb-1'>
+    <SafeAreaView className='w-full pb-1 bg-white h-full'>
       <ScrollView
         refreshControl={<RefreshControl
           refreshing={refreshing} onRefresh={onRefresh}

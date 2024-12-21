@@ -4,7 +4,7 @@ import images from "../constants/images"
 import CustomButton from './CustomButton'
 import { router } from 'expo-router'
 
-const EmptyState = ({ title, subtitle, enableBtn = true }) => {
+const EmptyState = ({ title, subtitle, enableBtn = false, btnText='Tạo bài viết mới', btnrouter = '/create' }) => {
     return (
         <View className="justify-center items-center p-2">
             <Image
@@ -12,16 +12,16 @@ const EmptyState = ({ title, subtitle, enableBtn = true }) => {
                 className="w-[270px] h-[100px]"
                 resizeMode='contain'
             />
-            <Text className="text-2xl font-psemibold text-black">
+            <Text className="text-2xl font-psemibold text-black text-center">
                 {title}
             </Text>
-            <Text className="font-pmedium text-sm text-gray-500 pb-5">
+            <Text className="font-pmedium text-sm text-gray-500 pb-5 text-center">
                 {subtitle}
             </Text>
             {(enableBtn) ? (
                 <CustomButton
-                    title={"Creare video"}
-                    handlePress={() => router.push("/create")}
+                    title={btnText}
+                    handlePress={() => router.push(btnrouter)}
                 />
             ) : (
                 <></>

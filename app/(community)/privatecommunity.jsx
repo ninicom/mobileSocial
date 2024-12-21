@@ -1,10 +1,12 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text } from 'react-native';
+import React from 'react';
+import { useLocalSearchParams } from 'expo-router';
 
 const PrivateCommunity = () => {
+  const { CommunityId } = useLocalSearchParams();
   return (
     <View>
-      <Text>PrivateCommunity</Text>
+      <Text>{CommunityId}</Text>
     </View>
   )
 }

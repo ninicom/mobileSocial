@@ -54,6 +54,9 @@ const CreateCommunity = () => {
     if (!form.communityName) {
       return Alert.alert('Vui lòng nhập tên cộng đồng!');
     }
+    if(!form.media){
+      return Alert.alert('Vui lòng chọn ảnh bìa của cộng đồng')
+    }
 
     setUploading(true)
 
