@@ -12,7 +12,7 @@ import CommunityCard from '../../components/CommunityCard'
 
 const community = () => {
   const { data: communities, refech } = useAppwrite(getMyCommunity);
-  
+
   const onCreate = () => {
     router.push('/createcommunity')
   }
@@ -47,7 +47,7 @@ const community = () => {
       </View>
       <SearchInput
         otherStyles={'py-2'}
-        height={10}
+        height={12}
         path='/searchCommunity'
         placeholder={"Tìm kiếm cộng đồng"}
       />

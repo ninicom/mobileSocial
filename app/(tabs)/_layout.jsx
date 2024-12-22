@@ -8,7 +8,6 @@ import Home from './home';
 import Chat from './chat';
 import Create from './create';
 import Friend from './friend';
-import Profile from './profile';
 import TestAPI from './testAPI';
 import Community from './community';
 
@@ -17,7 +16,6 @@ const renderScene = SceneMap({
   chat: Chat,
   create: Create,
   friend: Friend,
-  profile: Profile,
   testapi: TestAPI,
   community: Community,
 });

@@ -1,13 +1,11 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import community from '../app/(tabs)/community';
 import { shortenText } from '../lib/textUtils';
 import { router, usePathname } from 'expo-router'
 
 const CommunityCard = ({ Community }) => {
 
     const pathname = usePathname();
-
     const [CommunityId, setCommunityId] = useState('')
     const [name, setName] = useState('');
     const [picture, setPicture] = useState(null);

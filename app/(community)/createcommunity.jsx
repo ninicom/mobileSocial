@@ -72,7 +72,7 @@ const CreateCommunity = () => {
           isPrivate: null,
         });
   
-        router.push('/home');
+        router.replace('/community');
       }
       else {
         Alert.alert('Thất bại', 'Tạo nhóm thất bại')

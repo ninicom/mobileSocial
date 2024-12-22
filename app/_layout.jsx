@@ -39,7 +39,7 @@ const rootLayout = () => {
           },
           headerTintColor: '#fff',
           headerTitleAlign: 'center',
-        }}
+        }}        
       >
         {/*Nơi khai báo các screen */}
         <Stack.Screen name="index" options={{headerShown: false}}></Stack.Screen>

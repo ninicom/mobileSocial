@@ -1,11 +1,11 @@
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Image, Alert } from 'react-native'
-import { React, useState } from 'react'
+import { React, useState, useEffect } from 'react'
 import FormField from '../../components/FormField'
 import { icons } from '../../constants';
 import { ResizeMode, Video } from 'expo-av';
 import CustomButton from '../../components/CustomButton';
 import * as DocumentPicker from 'expo-document-picker'
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { createVideo } from '../../lib/appwrite';
 import { useGlobalContext } from '../../context/GlobalProvaider';
 import { createPost } from '../../lib/callAPIClient/PostAPI';
@@ -13,6 +13,7 @@ import { createPost } from '../../lib/callAPIClient/PostAPI';
 const Create = () => {
 
   const { user } = useGlobalContext();
+  const { CommunityId } = useLocalSearchParams();
   const [uploading, setUploading] = useState(false);
 
   const [form, setForm] = useState({
@@ -21,6 +22,20 @@ const Create = () => {
     mediaType: null,
     communityId: null,
   });
+
+  useEffect(() => {
+    if (CommunityId) {
+      setForm(prevForm => ({
+        ...prevForm,
+        communityId: CommunityId
+      }));
+    } else {
+      setForm(prevForm => ({
+        ...prevForm,
+        communityId: null
+      }));
+    }
+  }, [CommunityId]);
 
   const openPicker = async () => {
     const result = await DocumentPicker.getDocumentAsync({
@@ -56,17 +71,17 @@ const Create = () => {
 
     try {
       var isSuccess = await createPost(form);
-      if(isSuccess){
+      if (isSuccess) {
         Alert.alert('Success', 'Post uploaded successfully');
         router.push('/home');
       }
       else {
-        Alert.alert('Failed','Post uploaded failed')
+        Alert.alert('Failed', 'Post uploaded failed')
       }
-      
+
     } catch (error) {
       //Alert.alert(error);
-      Alert.alert('Failed','Post uploaded failed')
+      Alert.alert('Failed', 'Post uploaded failed')
       console.log(error);
     } finally {
       setForm({

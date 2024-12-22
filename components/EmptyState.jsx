@@ -4,14 +4,20 @@ import images from "../constants/images"
 import CustomButton from './CustomButton'
 import { router } from 'expo-router'
 
-const EmptyState = ({ title, subtitle, enableBtn = false, btnText='Tạo bài viết mới', btnrouter = '/create' }) => {
+const EmptyState = ({ title, subtitle, enableBtn = false, btnText = 'Tạo bài viết mới', btnrouter = '/create', enableImg = true }) => {
     return (
         <View className="justify-center items-center p-2">
-            <Image
-                source={images.empty}
-                className="w-[270px] h-[100px]"
-                resizeMode='contain'
-            />
+            
+            {enableImg ? (
+                <Image
+                    source={images.empty}
+                    className="w-[270px] h-[100px]"
+                    resizeMode='contain'
+                />
+            ) : (
+                <></>
+            )}
+
             <Text className="text-2xl font-psemibold text-black text-center">
                 {title}
             </Text>

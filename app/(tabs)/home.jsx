@@ -1,6 +1,6 @@
-import { View, Text, SafeAreaView, FlatList, Image, RefreshControl } from 'react-native'
+import { View, Text, SafeAreaView, FlatList, Image, RefreshControl, TouchableOpacity } from 'react-native'
 import { useState, React, useCallback } from 'react'
-import { useFocusEffect } from 'expo-router'
+import { router, useFocusEffect } from 'expo-router'
 import images from "../../constants/images"
 import SearchInput from '../../components/SearchInput'
 import Trending from '../../components/Trending'
@@ -13,29 +13,36 @@ import { getNewPost } from '../../lib/callAPIClient/PostAPI'
 import { useGlobalContext } from '../../context/GlobalProvaider'
 
 const Home = () => {
-  const { data: posts, refech } = useAppwrite(() => getNewPost(1, 10));
+  const { data: posts, refech } = useAppwrite(() => getNewPost(1, 30));
   const { data: lastedPosts } = useAppwrite(getLatestPosts);
+
+  const roundedProfile = () => {
+    router.push('/profile');
+  }
+
   const user = useGlobalContext();
-  console.log(user)
   const renderListHeader = useCallback(() => (
     <View className="w-full pb-2 px-4 space-y-6 flex-col">
-      <View className="justify-between items-start flex-row md-6">
-        <View>
-          <Text className="font-pmedium text-sm text-gray-600">
-            Chào mừng trở lại
-          </Text>
-          <Text className="text-2xl font-psemibold text-lightText">
-            {user.user.username}
-          </Text>
+      <TouchableOpacity onPress={roundedProfile}>
+        <View className="justify-between items-start flex-row md-6">
+          <View>
+            <Text className="font-pmedium text-sm text-gray-600">
+              Chào mừng trở lại
+            </Text>
+            <Text className="text-2xl font-psemibold text-lightText">
+              {user.user.username}
+            </Text>
+          </View>
+          <View className='mt-1.5'>
+            <Image
+              source={{ uri: user.user.avatar }}
+              className='w-10 h-10 rounded-xl'
+              resizeMode='contain'
+
+            />
+          </View>
         </View>
-        <View className='mt-1.5'>
-          <Image
-            source={images.logoSmall}
-            className='w-9 h-10'
-            resizeMode='contain'
-          />
-        </View>
-      </View>
+      </TouchableOpacity>
 
       <SearchInput
         placeholder="Tìm kiếm bài viết"
@@ -66,10 +73,10 @@ const Home = () => {
     setRefreshing(false);
   }
   // Sử dụng useFocusEffect để làm mới dữ liệu khi màn hình Home được focus 
-  useFocusEffect( 
-    useCallback(() => { 
-      refech(); 
-    }, []) 
+  useFocusEffect(
+    useCallback(() => {
+      refech();
+    }, [])
   );
 
   return (
@@ -90,7 +97,7 @@ const Home = () => {
         )}
 
         refreshControl={<RefreshControl
-          refreshing={refreshing} 
+          refreshing={refreshing}
           onRefresh={onRefresh}
         />}
         // buộc flatlist thay đổi khi post thay đổi

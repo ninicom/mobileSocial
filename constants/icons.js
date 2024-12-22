@@ -27,11 +27,14 @@ import picture from '../assets/icons/insert-picture-icon.png';
 import send from '../assets/icons/send.png';
 import cancel from '../assets/icons/cancel.png';
 import community from '../assets/icons/community.png';
-import radiocheck from '../assets/icons/radio_checked.png'
-import radiouncheck from '../assets/icons/radio_uncheck.png'
+import radiocheck from '../assets/icons/radio_checked.png';
+import radiouncheck from '../assets/icons/radio_uncheck.png';
+import publicgroup from '../assets/icons/publicGroup.png';
+import privategroup from '../assets/icons/privateGroup.png';
+import adduser from '../assets/icons/adduser.png';
+import arrow from '../assets/icons/arrow.png'
 
 export default {
-
   play,
   bookmark,
   home,
@@ -63,4 +66,8 @@ export default {
   community,
   radiocheck,
   radiouncheck,
+  publicgroup,
+  privategroup,
+  adduser,
+  arrow
 };

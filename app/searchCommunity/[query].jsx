@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, FlatList } from 'react-native'
+import { View, Text, FlatList, ScrollView } from 'react-native'
 import { React, useEffect, useCallback, useState } from 'react'
 import SearchInput from '../../components/SearchInput'
 import EmptyState from '../../components/EmptyState'
@@ -7,12 +7,18 @@ import useAppwrite from '../../lib/useAppwrite'
 import PostCard from '../../components/PostCard'
 import { useLocalSearchParams } from 'expo-router'
 import { RefreshControl } from 'react-native'
+import { searchCommunity } from '../../lib/callAPIClient/CommunityAPI'
+import CommunityCard from '../../components/CommunityCard'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
 
 const SearchCommunity = () => {
-  
-  const { query } = useLocalSearchParams();
-  const { data:posts, refech } = useAppwrite(() => searchPosts(query));
 
+  const { query } = useLocalSearchParams();
+  const { data: communitys, refech } = useAppwrite(() => searchCommunity(query));
+  const [joinedCommunities, setJoinedCommunities] = useState([]);
+  const [notJoinedCommunities, setNotJoinedCommunities] = useState([]);
+  console.log(communitys);
   const [refreshing, setRefreshing] = useState(false)
   const onRefresh = async () => {
     setRefreshing(true);
@@ -21,50 +27,61 @@ const SearchCommunity = () => {
     setRefreshing(false);
   }
 
-  const renderListHeader = useCallback(() => (
-    <View className="pt-6 px-4 space-y-6 pb-2">
-      <View className="justify-between items-start flex-row md-6">
-        <View>
-          <Text className="font-pmedium text-sm text-gray-600">
-            Search Results
-          </Text>
-          <Text className="text-2xl font-psemibold text-gray-600">
-            {query}
-          </Text>
-        </View>
-      </View>        
-      <SearchInput 
-        placeholder="Search for a video topic"
-        initialQuery={query}
-      />         
-    </View>
-  ));
 
   useEffect(() => {
     refech();
   }, [query])
 
-  return (
-    <SafeAreaView className="bg-white h-full">
-     <FlatList
-        data={posts}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => (
-          <PostCard post={item} />
-        )}
-        ListHeaderComponent={renderListHeader}
-        // nếu flat list rỗng sẽ hiển thị phần nội dung này thay cho flat list
-        ListEmptyComponent={() => (
-          <EmptyState
-            title="No Videos Found"
-            subtitle="Be the fist of one to upload video"
-          />
-        )}
+  useEffect(() => {
+    if (!communitys)
+      return;
+    setJoinedCommunities(communitys.joinedCommunities);
+    setNotJoinedCommunities(communitys.notJoinedCommunities);
+  }, [communitys])
 
+  return (
+    <SafeAreaView className='px-2 bg-white h-full'>
+      <ScrollView
         refreshControl={<RefreshControl
-          refreshing={refreshing} onRefresh={onRefresh}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
         />}
-      />
+      >
+        <View className='flex-row items-center w-full justify-center'>
+          <Text className='font-semibold text-lg'>Tìm kiếm cộng đồng: {query}</Text>
+
+        </View>
+        <SearchInput
+          otherStyles={'py-2'}
+          height={12}
+          path='/searchCommunity'
+          placeholder={"Tìm kiếm cộng đồng"}
+        />
+        <Text className='text-sm text-gray-600 pb-2'>Cộng đồng của bạn</Text>
+        <FlatList
+          data={joinedCommunities}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <CommunityCard Community={item} />
+          )}
+          ListEmptyComponent={(
+            <Text className='pl-2 text-center'>Bạn chưa tham gia cộng đồng nào có tên là: {query}</Text>
+          )}
+          scrollEnabled={false}
+        />
+        <Text className='text-sm text-gray-600 pb-2'>Cộng đồng chưa tham gia</Text>
+        <FlatList
+          data={notJoinedCommunities}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <CommunityCard Community={item} />
+          )}
+          ListEmptyComponent={(
+            <Text className='pl-2 text-center'>Không có cộng đồng chưa tham gia có tên là: {query}</Text>
+          )}
+          scrollEnabled={false}
+        />
+      </ScrollView>
     </SafeAreaView>
   )
 }
