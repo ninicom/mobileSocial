@@ -7,7 +7,7 @@ import { router } from 'expo-router'
 const EmptyState = ({ title, subtitle, enableBtn = false, btnText = 'Tạo bài viết mới', btnrouter = '/create', enableImg = true }) => {
     return (
         <View className="justify-center items-center p-2">
-            
+
             {enableImg ? (
                 <Image
                     source={images.empty}

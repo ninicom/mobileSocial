@@ -1,6 +1,6 @@
 import { View, Text, Image, ScrollView, RefreshControl, TouchableOpacity, Alert, FlatList } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { useLocalSearchParams } from 'expo-router';
+import React, { useState, useEffect, useCallback } from 'react';
+import { router, useLocalSearchParams, usePathname, useFocusEffect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getCommunity } from '../../lib/callAPIClient/CommunityAPI';
 import useAppwrite from '../../lib/useAppwrite';
@@ -9,12 +9,12 @@ import { icons } from '../../constants';
 import PostCard from '../../components/PostCard';
 import CustomButton from '../../components/CustomButton';
 import EmptyState from '../../components/EmptyState';
-import { getNewPost } from '../../lib/callAPIClient/PostAPI';
+import { getNewPost, getNewPostCommunity } from '../../lib/callAPIClient/PostAPI';
 
 const PrivateCommunity = () => {
   const { CommunityId } = useLocalSearchParams();
   const { data: Community, refech } = useAppwrite(() => getCommunity(CommunityId));
-  const { data: posts, refech: refechPost } = useAppwrite(() => getNewPost(1, 10));
+  const { data: posts, refech: refechPost } = useAppwrite(() => getNewPostCommunity(CommunityId, 1, 20));
   const [thumbnail, setThumbnail] = useState('');
   const [name, setName] = useState('N/A');
   const [description, setDescription] = useState('No description available');
@@ -23,9 +23,18 @@ const PrivateCommunity = () => {
   const [isprivate, setIsprivate] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const validMemberTypes = ['Admin', 'Member', 'Owner'];
+  const pathname = usePathname();
+
+  // Sử dụng useFocusEffect để làm mới dữ liệu khi màn hình Home được focus 
+  useFocusEffect(
+    useCallback(() => {
+      onRefresh();
+    }, [])
+  );
 
   useEffect(() => {
     refech();
+    refechPost();
   }, [CommunityId])
 
 
@@ -46,10 +55,10 @@ const PrivateCommunity = () => {
   const onRefresh = async () => {
     setRefreshing(true);
     // Re-fetch community data
+    await refechPost();
     await refech();
     setRefreshing(false);
   };
-
   // Xác định hình ảnh hiển thị (hoặc hình ảnh mặc định)
   const imageSource = thumbnail
     ? { uri: thumbnail }
@@ -65,11 +74,27 @@ const PrivateCommunity = () => {
   }
 
   const onAddUser = () => {
-
+    if (pathname.startsWith('/membercommunity')) {
+      router.setParams({ CommunityId });
+    }
+    else {
+      router.push(`/membercommunity`);
+      setTimeout(() => {
+        router.setParams({ CommunityId, name });
+      }, 0); // Đặt thời gian chờ ngắn để đảm bảo router.push hoàn tất
+    }
   }
 
   const onCreatePost = () => {
-
+    if (pathname.startsWith('/createCommunityPost')) {
+      router.setParams({ CommunityId });
+    }
+    else {
+      router.push(`/createCommunityPost`);
+      setTimeout(() => {
+        router.setParams({ CommunityId, name });
+      }, 0); // Đặt thời gian chờ ngắn để đảm bảo router.push hoàn tất
+    }
   }
 
   const onJoinGroup = () => {
@@ -77,7 +102,15 @@ const PrivateCommunity = () => {
   }
 
   const onManage = () => {
-
+    if (pathname.startsWith('/memberManage')) {
+      router.setParams({ CommunityId });
+    }
+    else {
+      router.push(`/memberManage`);
+      setTimeout(() => {
+        router.setParams({ CommunityId, name });
+      }, 0); // Đặt thời gian chờ ngắn để đảm bảo router.push hoàn tất
+    }
   }
 
   return (

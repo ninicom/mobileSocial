@@ -47,7 +47,7 @@ const Home = () => {
       <SearchInput
         placeholder="Tìm kiếm bài viết"
       />
-      {
+      {/*
         (lastedPosts) ? (
           <View className="w-full flex-1 pb-8">
             <Text className="text-base text-gray-600 pb-5">
@@ -59,7 +59,7 @@ const Home = () => {
           </View>
         ) : (
           <></>
-        )
+        )*/
       }
     </View>
   ), [images.logoSmall, lastedPosts]);

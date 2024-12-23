@@ -1,20 +1,15 @@
 import { View, Text, Image, ScrollView, FlatList, RefreshControl, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { getFriendSuggestions, getOrderFriend, getRequestFriend } from '../../lib/callAPIClient/friendAPI'
-import FriendCard from '../../components/Friend/FriendCard'
 import useAppwrite from '../../lib/useAppwrite'
-import FriendRequestCard from '../../components/Friend/FriendRequestCard'
-import SearchInput from '../../components/SearchInput'
-import CommuninityMemberCard from '../../components/CommuninityMemberCard'
-import { icons } from '../../constants'
 import { router, useLocalSearchParams } from 'expo-router'
-import { getMemmberToAdd } from '../../lib/callAPIClient/CommunityAPI'
+import { getMember } from '../../lib/callAPIClient/CommunityAPI'
+import MemberManageCard from '../../components/MemberManageCard'
 
-const Members = () => {
+const MemberManage = () => {
 
   const { CommunityId } = useLocalSearchParams();
-  const { data: memberAdd, refech: refechSuggestions } = useAppwrite(() => getMemmberToAdd(CommunityId));
+  const { data: memberAdd, refech: refechSuggestions } = useAppwrite(() => getMember(CommunityId));
   const [refreshing, setRefreshing] = useState(false)
   const onRefresh = async () => {
     setRefreshing(true);
@@ -46,16 +41,16 @@ const Members = () => {
           data={memberAdd}
           keyExtractor={(item) => `friendSuggestions${item._id}`}
           ListHeaderComponent={() => (
-            <Text className='text-lg'>Gợi ý</Text>
+            <Text className='text-lg'>Thành viên</Text>
           )}
           renderItem={({ item }) => (
-            <CommuninityMemberCard
+            <MemberManageCard
               person={item}
               communityId={CommunityId}
             />
           )}
           ListEmptyComponent={(
-            <Text className='pr-2'>Không có gợi ý thêm nào</Text>
+            <Text className='pr-2'>Cộng đồng chưa có thành viên nào</Text>
           )}
         />
       </ScrollView>
@@ -63,4 +58,4 @@ const Members = () => {
   )
 }
 
-export default Members
+export default MemberManage

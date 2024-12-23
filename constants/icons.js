@@ -33,6 +33,7 @@ import publicgroup from '../assets/icons/publicGroup.png';
 import privategroup from '../assets/icons/privateGroup.png';
 import adduser from '../assets/icons/adduser.png';
 import arrow from '../assets/icons/arrow.png'
+import add from "../assets/icons/add.png";
 
 export default {
   play,
@@ -69,5 +70,6 @@ export default {
   publicgroup,
   privategroup,
   adduser,
-  arrow
+  arrow,
+  add
 };

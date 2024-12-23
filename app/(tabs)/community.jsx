@@ -38,8 +38,8 @@ const community = () => {
         <View className='flex-1 items-end'>
           <TouchableOpacity onPress={onCreate} className='items-end'>
             <Image
-              source={icons.upload}
-              className='h-8 w-8'
+              source={icons.add}
+              className='h-6 w-6 m-2'
               resizeMode='contain'
             />
           </TouchableOpacity>

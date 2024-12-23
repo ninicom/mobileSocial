@@ -10,40 +10,89 @@ import { shortenText } from '../lib/textUtils'
 import { router, usePathname } from 'expo-router'
 import { getUser } from '../lib/callAPIClient/userAPI'
 import { likePost, unLikePost } from '../lib/callAPIClient/PostAPI'
+import { getCommunity } from '../lib/callAPIClient/CommunityAPI'
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, showCommunity = false  }) => {
 
-    const [author, setAuthor] = useState(null);
-    const [isLiked, setIsLiked] = useState(post.isLiked);
-    const [postlike, setPostlike] = useState(post.likeCount)
+    const [authorId, setAuthorId] = useState(null);
+    const [isLiked, setIsLiked] = useState(false);
+    const [postLikeCount, setPostLikeCount] = useState(0);
+    const [avatar, setAvatar] = useState('http://192.168.1.154:3000/uploads/1732679542370-664186079.jpg');
+    const [headline, setHeadline] = useState('');
+    const [byline, setByline] = useState('');
+    const [postId, setPostId] = useState('');
+    const [mediaType, setMediaType] = useState('');
+    const [content, setContent] = useState('');
+    const [mediaPath, setMediaPath] = useState('');
+    const [isCommunityPost, setIsCommunityPost] = useState(false);
+    const [communityId, setCommunityId] = useState('')
 
-    var avatar = 'http://192.168.1.154:3000/uploads/1732679542370-664186079.jpg';
-    var headline = '';
-    var byline = '';
-    if (!post) {
-        return (<></>);
-    };
     useEffect(() => {
+        if (!post) return;
+
+        // Thiết lập thông tin bài viết
+        setPostId(post._id || '');
+        setMediaType(post.mediaDetails?.MediaType || '');
+        setContent(post.content || '');
+        setMediaPath(post.mediaDetails?.filepath || '');
+        setIsLiked(post.isLiked || false);
+        setPostLikeCount(post.likeCount || 0);
+        if(showCommunity){
+            setIsCommunityPost(post.IsCommunityPost || false);
+        }        
+        setCommunityId(post.Community || '');
+
+        // Thiết lập thông tin tác giả
         const fetchUser = async () => {
-            const userResponse = await getUser(post.Author);
-            if (userResponse && userResponse.user) {
-                setAuthor(userResponse.user);
-            } else {
-                // Xử lý trường hợp không tìm thấy người dùng
-                Alert.alert('Error', 'User not found');
+            try {
+                const userResponse = await getUser(post.Author);
+                if (userResponse?.user) {
+                    setAuthorId(userResponse.user.userId || '');
+                    setAvatar(userResponse.user.avatar || 'default-avatar-url');
+                    setHeadline(userResponse.user.username || 'Unknown');
+                    setByline(formatDate(post.CreatedAt));
+                } else {
+                    console.warn('User not found for post author.');
+                    setAvatar('default-avatar-url');
+                    setHeadline('Unknown');
+                    setByline(formatDate(post.CreatedAt));
+                }
+            } catch (error) {
+                console.error('Error fetching user:', error);
+                Alert.alert('Error', 'Unable to fetch author details.');
             }
         };
-        setIsLiked(post.isLiked); 
-        setPostlike(post.likeCount);
-        fetchUser();
-    }, [post]);
 
-    const postId = post._id;
-    const mediaType = post.mediaDetails.MediaType;
-    const time = formatDate(post.CreatedAt);
-    const content = post.content;
-    const mediaPath = post.mediaDetails.filepath;
-    const isCommunityPost = post.IsCommunityPost;
+        const fetchGroup = async () => {
+            try {
+                const userResponse = await getUser(post.Author);
+                const groupRessponse = await getCommunity(post.Community);
+                console.log(groupRessponse)
+                if(groupRessponse) {                    
+                    setAvatar(groupRessponse.CommunityPictureUrl || 'default-avatar-url');
+                    setHeadline(groupRessponse.name || 'Unknown');
+                }
+                if (userResponse?.user) {
+                    setAuthorId(userResponse.user.userId || '');
+                    setByline(userResponse.user.username + " " + formatDate(post.CreatedAt));
+                } else {
+                    console.warn('User not found for post author.');
+                    setAvatar('default-avatar-url');
+                    setHeadline('Unknown');
+                    setByline(formatDate(post.CreatedAt));
+                }
+            } catch (error) {
+                console.error('Error fetching user:', error);
+                Alert.alert('Error', 'Unable to fetch author details.');
+            }
+        };
+
+        if (isCommunityPost) {
+            fetchGroup();
+        } else {
+            fetchUser();
+        }
+    }, [post]);
 
     const player = useVideoPlayer(mediaPath, player => {
         player.loop = false;
@@ -51,19 +100,51 @@ const PostCard = ({ post }) => {
     });
 
     const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing });
-    if (isCommunityPost) {
-        avatar = 'http://192.168.1.154:3000/uploads/1732679542370-664186079.jpg';
-        headline = 'group';
-        byline = `${author.username} ${time}`;
-    } else {
-        if (author) {
-            avatar = author.avatar;
-            headline = author.username;
-        }
-        byline = time;
-    }
+
 
     const pathname = usePathname();
+
+    const onRouteHeadLine = () => {
+        if (isCommunityPost) {
+            if (pathname.startsWith('/privatecommunity')) {
+                router.setParams({ communityId });
+            }
+            else {
+                router.push(`/privatecommunity`);
+                setTimeout(() => {
+                    router.setParams({ communityId });
+                }, 0); // Đặt thời gian chờ ngắn để đảm bảo router.push hoàn tất
+            }
+        } else {
+            if (pathname.startsWith('/userProfile')) {
+                router.setParams({ userId: authorId });
+            }
+            else {
+                router.push(`/userProfile`);
+                setTimeout(() => {
+                    router.setParams({ userId: authorId });
+                }, 0); // Đặt thời gian chờ ngắn để đảm bảo router.push hoàn tất
+            }
+        }
+    }
+
+    const onRouteByLine = () => {
+        if (isCommunityPost) {
+            if (pathname.startsWith('/privatecommunity')) {
+                router.setParams({ query });
+            }
+            else {
+                router.push(`privatecommunity/${query}`);
+            }
+        } else {
+            if (pathname.startsWith('/userProfile')) {
+                router.setParams({ query });
+            }
+            else {
+                router.push(`/userProfile/${query}`);
+            }
+        }
+    }
 
     const renderView = () => {
         if (mediaType == 'Image') {
@@ -95,27 +176,27 @@ const PostCard = ({ post }) => {
         setIsLiked(!isLiked);
         // do something
         if (isLiked) {
-            setPostlike(postlike - 1);
+            setPostLikeCount(postLikeCount - 1);
             try {
                 var statusLike = Promise.all(unLikePost(post._id));
                 if (!statusLike) {
                     throw new Error('Like thất bại');
                 }
             } catch (error) {
-                setPostlike(postlike + 1);
+                setPostLikeCount(postLikeCount + 1);
                 setIsLiked(isLiked);
                 console.log('like error', error);
             }
         }
         else {
-            setPostlike(postlike + 1);
+            setPostLikeCount(postLikeCount + 1);
             try {
                 var statusLike = Promise.all(likePost(post._id));
                 if (!statusLike) {
                     throw new Error('unLike thất bại');
                 }
             } catch (error) {
-                setPostlike(postlike - 1);
+                setPostLikeCount(postLikeCount - 1);
                 setIsLiked(isLiked);
                 console.log('like error', error);
             }
@@ -141,14 +222,23 @@ const PostCard = ({ post }) => {
             <View className="flex-row gap-3 items-start">
                 <View className="justify-center items-center flex-row flex-1">
                     <View className="w-[46px] h-[46px] rounded-lg border border-blue-300 justify-center items-center p-0.5">
-                        <Image source={{ uri: avatar }}
-                            className="h-full w-full rounded-lg"
-                            resizeMode='cover'
-                        />
+                        <TouchableOpacity
+                            onPress={onRouteHeadLine}
+                            className="h-full w-full"
+                        >
+                            <Image source={{ uri: avatar }}
+                                className="h-full w-full rounded-lg"
+                                resizeMode='cover'
+                            />
+                        </TouchableOpacity>
                     </View>
                     <View className="justify-center flex-1 ml-3 gap-y-1">
-                        <Text className="text-lightText font-psemibold text-sm">{headline}</Text>
-                        <Text className="text-xs text-gray-600 font-pregular">{byline}</Text>
+                        <TouchableOpacity onPress={onRouteHeadLine}>
+                            <Text className="text-lightText font-psemibold text-sm">{headline}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={onRouteByLine}>
+                            <Text className="text-xs text-gray-600 font-pregular">{byline}</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View className="pt-2">
@@ -170,8 +260,8 @@ const PostCard = ({ post }) => {
                             className='w-[24px] h-[24px]'
                             tintColor={'#93c5fd'}
                         />
-                        {postlike > 0 ? (
-                            <Text className='text-gray-600'>{postlike}</Text>
+                        {postLikeCount > 0 ? (
+                            <Text className='text-gray-600'>{postLikeCount}</Text>
                         ) : (
                             <Text className='text-gray-600'>Like</Text>
                         )}
@@ -183,8 +273,8 @@ const PostCard = ({ post }) => {
                             className='w-[24px] h-[24px]'
                             tintColor={'#4b5563'}
                         />
-                        {postlike > 0 ? (
-                            <Text className='text-gray-600'>{postlike}</Text>
+                        {postLikeCount > 0 ? (
+                            <Text className='text-gray-600'>{postLikeCount}</Text>
                         ) : (
                             <Text className='text-gray-600'>Like</Text>
                         )}

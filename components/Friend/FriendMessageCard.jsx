@@ -3,25 +3,28 @@ import React, { useState } from 'react'
 import CustomButton from '../CustomButton'
 import { addFriend, removeAddFriend } from '../../lib/callAPIClient/friendAPI'
 import { router, usePathname } from 'expo-router'
+import { getChatId } from '../../lib/callAPIClient/ChatAPI'
 
 const FriendMessageCard = ({ person }) => {
     const pathname = usePathname();
     const onChat = async () => {
         try {
-            const $id = person._id;
-            if(!$id) {
-                Alert.alert('Missing query', 'Please input to search results across database');
+            const id = await getChatId(person._id);
+            console.log(id)
+            if(!id) {
+                Alert.alert('Lỗi', 'Không tìm thấy đoạn chat với ' + person.username);
             }
             else {
                 if(pathname.startsWith('/chat')) {
-                    router.setParams({$id});
+                    router.setParams({id});
                 }
                 else {
-                    router.push(`/chat/${$id}`);
+                    router.push(`/chat/${id}`);
                 }
               }
         } catch (error) {
-            Alert.alert('On Chat error', error.message);
+            console.log(error)
+            Alert.alert('On Chat error');
         }
     }
 

@@ -38,36 +38,36 @@ export default function TabViewExample() {
     { key: 'create', icon: icon.plus },
     { key: 'friend', icon: icon.friends },
     //{ key: 'profile', icon: icon.profile },
-    { key: 'community', icon: icon.community},
+    { key: 'community', icon: icon.community },
   ]);
 
   return (
     <SafeAreaView className='h-full'>
-        <StatusBar 
-                backgroundColor='#FFFFFF'
-                barStyle='dark-content'
-                hidden={false}
-        />
-        <TabView
-            navigationState={{ index, routes }}
-            commonOptions={{
-              icon: ({ route, focused, color }) => (
-                <Image
-                  source={route.icon}
-                  style={{
-                    width: 24,
-                    height: 24,
-                    tintColor: focused ? '#93c5fd' : '#C8CACD',
-                  }}
-                />
-              ),
-            }}
-            renderScene={renderScene}
-            renderTabBar={renderTabBar}
-            onIndexChange={setIndex}
-            initialLayout={{ width: layout.width }}      
-            tabBarPosition='bottom'              
-        />
+      <StatusBar
+        backgroundColor='#FFFFFF'
+        barStyle='dark-content'
+        hidden={false}
+      />
+      <TabView
+        navigationState={{ index, routes }}
+        commonOptions={{
+          icon: ({ route, focused, color }) => (
+            <Image
+              source={route.icon}
+              style={{
+                width: 24,
+                height: 24,
+                tintColor: focused ? '#93c5fd' : '#C8CACD',
+              }}
+            />
+          ),
+        }}
+        renderScene={renderScene}
+        renderTabBar={renderTabBar}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
+        tabBarPosition='bottom'
+      />
     </SafeAreaView>
   );
 }
