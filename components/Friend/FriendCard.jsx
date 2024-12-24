@@ -1,7 +1,8 @@
-import { Alert, Image, StyleSheet, Text, View } from 'react-native'
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import CustomButton from '../CustomButton'
 import { addFriend, removeAddFriend } from '../../lib/callAPIClient/friendAPI'
+import { router, usePathname } from 'expo-router'
 
 const FriendCard = ({ person, status = false }) => {
     const [isAdded, setIsAdded] = useState(status);
@@ -33,12 +34,27 @@ const FriendCard = ({ person, status = false }) => {
         }
     }
 
+    const pathname = usePathname();
+    const onGetProfile = () => {
+        if (pathname.startsWith('/userProfile')) {
+            router.setParams({ userId: person._id });
+        }
+        else {
+            router.push(`/userProfile`);
+            setTimeout(() => {
+                router.setParams({ userId: person._id });
+            }, 0); // Đặt thời gian chờ ngắn để đảm bảo router.push hoàn tất
+        }
+    }
+
     return (
         <View className='w-full p-1 flex-row items-center'>
-            <Image
-                className='w-[61px] h-[61px] rounded-md'
-                source={{ uri: person.avatar }}
-            />
+            <TouchableOpacity onPress={onGetProfile}>
+                <Image
+                    className='w-[61px] h-[61px] rounded-md'
+                    source={{ uri: person.avatar }}
+                />
+            </TouchableOpacity>
             <View className='flex-col flex-1 pl-2'>
                 <Text className='text-xl pb-1 text-gray-800'>{person.username}</Text>
                 {/* Change the state of friend request */}

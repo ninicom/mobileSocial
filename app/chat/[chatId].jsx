@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image, Alert, RefreshControl } from 'react-native';
 import { React, useEffect, useCallback, useState } from 'react';
 import EmptyState from '../../components/EmptyState';
 import useAppwrite from '../../lib/useAppwrite';
@@ -11,12 +11,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import MessageCard from '../../components/MessageCard';
 import { createMessage, getMessages } from '../../lib/callAPIClient/MessageAPI';
 import { getUser } from '../../lib/callAPIClient/userAPI';
+import { reload } from 'expo-router/build/global-state/routing';
 
 const Chat = () => {
   const { chatId } = useLocalSearchParams();
   const { data: chat, refech } = useAppwrite(() => getMessages(chatId));
   const { user } = useGlobalContext();
 
+  const [refreshing, setRefreshing] = useState(false)
   const [members, setMember] = useState([]);
   const [messages, setMessages] = useState([]);
   const [chatName, setChatName] = useState('Chat');
@@ -28,6 +30,11 @@ const Chat = () => {
     data: [],
   });
 
+  const reload = async () => {
+    setRefreshing(true);
+    await refech();
+    setRefreshing(false);
+  }
 
   useEffect(() => {
     if (!chat) {
@@ -42,14 +49,15 @@ const Chat = () => {
     const fetchUser = async (userId) => {
       try {
         const userResponse = await getUser(userId);
-        if (userResponse?.user) {
+        console.log(userResponse)
+        if (userResponse && userResponse.user) {
           setChatName(shortenText(userResponse.user.username, 15));
           setChatpicture(userResponse.user.avatar);
         } else {
           Alert.alert('Error', 'User not found');
         }
       } catch (error) {
-        console.error('Error fetching user:', error);
+        console.log('Error fetching user:', error);
       }
     };
 
@@ -87,8 +95,8 @@ const Chat = () => {
     try {
       await createMessage(chatId, null, form);
     } catch (error) {
-      console.error('Error sending message:', error);
-    } finally {      
+      console.log('Error sending message:', error);
+    } finally {
       setValue('');
       setForm({
         message: '',
@@ -149,14 +157,21 @@ const Chat = () => {
       <FlatList
         data={messages}
         keyExtractor={(item) => item._id || item.id || Math.random().toString()}
-        renderItem={({ item }) => <MessageCard message={item}/>}
+        renderItem={({ item }) => <MessageCard message={item} />}
         ListEmptyComponent={() => (
-          <EmptyState
-            title="You have no messages yet"
-            subtitle="Let’s start messaging."
-            enableBtn={false}
-          />
+          <View className='scale-y-0'>
+            <EmptyState
+              title="You have no messages yet"
+              subtitle="Let’s start messaging."
+              enableBtn={false}
+            />
+          </View>
         )}
+
+        refreshControl={<RefreshControl
+          refreshing={refreshing}
+          onRefresh={reload}
+        />}
         inverted // đảo ngược flatlist và hướng cuộn
       />
       <MessageInput

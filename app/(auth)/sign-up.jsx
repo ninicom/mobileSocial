@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, Image, Alert } from 'react-native'
-import {React, useState} from 'react'
-import {images} from '../../constants'
+import { React, useState } from 'react'
+import { images } from '../../constants'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 import { Link, router } from 'expo-router'
@@ -20,23 +20,27 @@ const SignUp = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const submit = async () => {
-    if(!form.userName || !form.email || !form.password){
+    if (!form.userName || !form.email || !form.password) {
       Alert.alert('Error', 'Please fill in all the fields')
     }
-    else{
+    else {
       setIsSubmitting(false);
       try {
-        const result = await createUser(form.email, form.phone, form.password, form.userName);
-        setUser(result);
-        setIsLoggedIn(true);
-        // set it to global state...
-        router.replace('/home');
+        const result1 = await createUser(form.email, form.phone, form.password, form.userName);
+        const result = await signIn(form.email, form.password);
+        if (result != null) {
+          const currentUser = await getCurrentUser();
+          setUser(currentUser.user);
+          setIsLoggedIn(true);
+          // set it to global state...
+          router.replace('/home');
+        }
       } catch (error) {
         Alert.alert('Error', error);
       } finally {
         setIsSubmitting(false);
       }
-    }    
+    }
   }
 
   return (
@@ -44,68 +48,68 @@ const SignUp = () => {
       <ScrollView>
         <View className="w-full min-h-[85vh] justify-center px-4 my-4s">
           <View className='flex-row items-center pt-2'>
-            <Image 
-              source={images.logoSmall}
+            <Image
+              source={images.logo2}
               resizeMode='contain'
               className="w-[35px] h-[35px]"
             />
             <Text
               className="text-2xl text-gray-600 font-psemibold"
             >
-              Sign up to Aora
+              Tạo tài khoản 2Friend
             </Text>
           </View>
 
-          <FormField 
-            title="Username"
+          <FormField
+            title="Tên người dùng"
             value={form.userName}
             handleChangeText={(e) => setForm({ ...form, userName: e })}
             otherStyles="mt=7"
           />
 
-          <FormField 
+          <FormField
             title="Email"
             value={form.email}
             handleChangeText={(e) => setForm({ ...form, email: e })}
             otherStyles="mt=7"
-            ketboardType="email-address"
+            ketboardType="Địa chỉ email"
           />
-          
-          <FormField 
-            title="Phone"
+
+          <FormField
+            title="Số điện thoại"
             value={form.phone}
             handleChangeText={(e) => setForm({ ...form, phone: e })}
             otherStyles="mt=7"
           />
 
-          <FormField 
-            title="Password"
+          <FormField
+            title="Mật khẩu"
             value={form.password}
             handleChangeText={(e) => setForm({ ...form, password: e })}
             otherStyles="mt=7"
           />
 
           <CustomButton
-            title='Sign Up'
+            title='Tạo tài khoản'
             handlePress={submit}
             containerStyles='mt-7'
             isLoading={isSubmitting}
           />
 
-          <View 
+          <View
             className='justify-center pt-5 flex-row gap-2 font-pregular'
           >
             <Text
               className='text-lg text-gray-500 font-pregular'
             >
-              Have an account already?
+              Đã có tài khoản?
             </Text>
             <Link href="/sign-in"
               className='text-lg font-semibold text-secondary-100'
             >
-              Sign In
+              Đăng nhập
             </Link>
-          </View>          
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

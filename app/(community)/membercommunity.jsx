@@ -44,7 +44,7 @@ const Members = () => {
           // thêm scroll enabled để các phần tử không cuộn riếng lẻ
           scrollEnabled={false}
           data={memberAdd}
-          keyExtractor={(item) => `friendSuggestions${item._id}`}
+          keyExtractor={(item) => `friendSuggestions${item._id}-${Math.random().toString(36).substr(2, 9)}`}
           ListHeaderComponent={() => (
             <Text className='text-lg'>Gợi ý</Text>
           )}

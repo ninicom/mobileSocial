@@ -45,7 +45,7 @@ const Search = () => {
     <SafeAreaView className="bg-white h-full">
      <FlatList
         data={posts}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => `se${item._id}-${Math.random().toString(36).substr(2, 9)}`}
         renderItem={({ item }) => (
           <PostCard post={item} />
         )}

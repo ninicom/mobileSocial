@@ -40,7 +40,7 @@ const Friend = () => {
           className='p-2 w-full'
           scrollEnabled={false}
           data={listOrderFriend}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => `li${item._id}-${Math.random().toString(36).substr(2, 9)}`}
           ListHeaderComponent={(
             <Text className='text-lg'>Lời mời kết bạn</Text>
           )}
@@ -56,7 +56,7 @@ const Friend = () => {
           className='p-2 w-full'
           scrollEnabled={false}
           data={listRequestFriend}
-          keyExtractor={(item) => `listRequestFriend${item._id}`}
+          keyExtractor={(item) => `listRequestFriend${item._id}-${Math.random().toString(36).substr(2, 9)}`}
           ListHeaderComponent={(
             <Text className='text-lg'>Lời mời kết bạn đã gửi</Text>
           )}
@@ -73,7 +73,7 @@ const Friend = () => {
           // thêm scroll enabled để các phần tử không cuộn riếng lẻ
           scrollEnabled={false}
           data={friendSuggestions}
-          keyExtractor={(item) => `friendSuggestions${item._id}`}
+          keyExtractor={(item) => `friendSuggestions${item._id}-${Math.random().toString(36).substr(2, 9)}`}
           ListHeaderComponent={() => (
             <Text className='text-lg'>Gợi ý kết bạn</Text>
           )}

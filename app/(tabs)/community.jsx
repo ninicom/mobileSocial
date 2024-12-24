@@ -54,7 +54,7 @@ const community = () => {
       <Text className='text-sm text-gray-600 pb-2'>Cộng đồng của bạn</Text>
       <FlatList
         data={communities}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => `c${item._id}-${Math.random().toString(36).substr(2, 9)}`}
         renderItem={({ item }) => (
           <CommunityCard Community={item} />
         )}

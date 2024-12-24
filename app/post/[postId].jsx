@@ -58,7 +58,7 @@ const Post = () => {
                 <FlatList
                     className='flex-1 px-2'
                     data={comments}
-                    keyExtractor={(item) => item._id || item.id || Math.random().toString()}
+                    keyExtractor={(item) => `comment${item._id}-${Math.random().toString(36).substr(2, 9)}` || $`comment{item.id}-${Math.random().toString(36).substr(2, 9)}` || Math.random().toString()}
                     scrollEnabled={false}
                     renderItem={({ item }) => (
                         <CommentCard comment={item} />

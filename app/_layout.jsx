@@ -1,8 +1,9 @@
 import { StyleSheet, StatusBar } from 'react-native'
 import React, { useEffect } from 'react'
-import { SplashScreen ,Stack } from 'expo-router'
+import { SplashScreen, Stack } from 'expo-router'
 import { useFonts } from 'expo-font'
 import GlobalProvaider from '../context/GlobalProvaider'
+import { MenuProvider } from 'react-native-popup-menu'
 
 SplashScreen.preventAutoHideAsync();
 
@@ -20,43 +21,45 @@ const rootLayout = () => {
   });
 
   useEffect(() => {
-    if(error)
+    if (error)
       throw error;
-    if(fontsLoaded)
+    if (fontsLoaded)
       SplashScreen.hideAsync();
   }, [fontsLoaded, error])
 
-  if(!fontsLoaded && !error){
+  if (!fontsLoaded && !error) {
     return null;
   }
 
   return (
     <GlobalProvaider>
-      <Stack 
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: '#161622'
-          },
-          headerTintColor: '#fff',
-          headerTitleAlign: 'center',
-        }}        
-      >
-        {/*Nơi khai báo các screen */}
-        <Stack.Screen name="index" options={{headerShown: false}}></Stack.Screen>
-        <Stack.Screen name="(auth)" options={{headerShown: false}}></Stack.Screen>
-        <Stack.Screen name="(tabs)" options={{headerShown: false}}></Stack.Screen>
-        <Stack.Screen name="search/[query]" options={{headerShown: false}}></Stack.Screen> 
-        <Stack.Screen name="chat/[chatId]" options={{headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal'}}></Stack.Screen> 
-        <Stack.Screen name="post/[postId]" options={{headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal'}}></Stack.Screen> 
-        <Stack.Screen name="searchFriend/[query]" options={{headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal'}}></Stack.Screen> 
-        <Stack.Screen name="searchCommunity/[query]" options={{headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal'}}></Stack.Screen>
-        <Stack.Screen name='(community)' options={{headerShown: false}}></Stack.Screen>
-      </Stack>      
-      <StatusBar 
+      <MenuProvider>
+        <Stack
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#161622'
+            },
+            headerTintColor: '#fff',
+            headerTitleAlign: 'center',
+          }}
+        >
+          {/*Nơi khai báo các screen */}
+          <Stack.Screen name="index" options={{ headerShown: false }}></Stack.Screen>
+          <Stack.Screen name="(auth)" options={{ headerShown: false }}></Stack.Screen>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }}></Stack.Screen>
+          <Stack.Screen name="search/[query]" options={{ headerShown: false }}></Stack.Screen>
+          <Stack.Screen name="chat/[chatId]" options={{ headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal' }}></Stack.Screen>
+          <Stack.Screen name="post/[postId]" options={{ headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal' }}></Stack.Screen>
+          <Stack.Screen name="searchFriend/[query]" options={{ headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal' }}></Stack.Screen>
+          <Stack.Screen name="searchCommunity/[query]" options={{ headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal' }}></Stack.Screen>
+          <Stack.Screen name='(community)' options={{ headerShown: false }}></Stack.Screen>
+        </Stack>
+        <StatusBar
           backgroundColor='#FFFFFF'
           barStyle='light-content'
           hidden={false}
-      />
+        />
+      </MenuProvider>
     </GlobalProvaider>
   )
 }
@@ -64,10 +67,10 @@ const rootLayout = () => {
 export default rootLayout
 
 const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    }
+  container: {
+    display: 'flex',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 })

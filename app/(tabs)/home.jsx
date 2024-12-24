@@ -13,7 +13,7 @@ import { getNewPost } from '../../lib/callAPIClient/PostAPI'
 import { useGlobalContext } from '../../context/GlobalProvaider'
 
 const Home = () => {
-  const { data: posts, refech } = useAppwrite(() => getNewPost(1, 30));
+  const { data: posts, refech } = useAppwrite(() => getNewPost(1, 100));
   const { data: lastedPosts } = useAppwrite(getLatestPosts);
 
   const roundedProfile = () => {
@@ -83,7 +83,7 @@ const Home = () => {
     <SafeAreaView className="bg-lightBackground h-full">
       <FlatList
         data={posts}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => `po${item._id}-${Math.random().toString(36).substr(2, 9)}`}
         renderItem={({ item }) => (
           <PostCard post={item} />
         )}

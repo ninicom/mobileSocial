@@ -1,23 +1,23 @@
 import { Alert, Image, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import CustomButton from './CustomButton'
-import { addFriend, removeAddFriend } from '../lib/callAPIClient/friendAPI'
-import { addMember } from '../lib/callAPIClient/CommunityAPI'
+import { removeMember } from '../lib/callAPIClient/CommunityAPI'
 
 const MemberManageCard = ({ communityId ,person, status = false }) => {
     const [isAdded, setIsAdded] = useState(status);
     const RemoveMember = async () => {
         try {
             setIsAdded(!isAdded);
-            var added = await addMember(communityId, person._id);
+            var added = await removeMember(communityId, person._id);
             if (added) {
                 setIsAdded(true);
+                Alert.alert('Xóa thành công', `${person.username} dã xóa khỏi cộng đồng không`);
             } else {
                 setIsAdded(false);
             }
         } catch (error) {
             setIsAdded(false);
-            Alert.alert('Thêm thất bại', error.message);
+            Alert.alert('Xóa thất bại', error.message);
         }
     }
 

@@ -60,7 +60,7 @@ const SearchCommunity = () => {
         <Text className='text-sm text-gray-600 pb-2'>Cộng đồng của bạn</Text>
         <FlatList
           data={joinedCommunities}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => `sec${item._id}-${Math.random().toString(36).substr(2, 9)}`}
           renderItem={({ item }) => (
             <CommunityCard Community={item} />
           )}

@@ -118,7 +118,7 @@ const UserProfile = () => {
             >
                 <FlatList
                     data={posts}
-                    keyExtractor={(item) => `post${item._id}`}
+                    keyExtractor={(item) => `post${item._id}-${Math.random().toString(36).substr(2, 9)}`}
                     renderItem={({ item }) => (
                         <PostCard post={item} />
                     )}

@@ -17,10 +17,9 @@ export default function App() {
             <ScrollView contentContainerStyle={{height: '100.06%'}}>
                 <View className='w-full justify-center items-center min-h-[85vh] px-4'>
                     <Image 
-                        source={images.logo} 
+                        source={images.logo2} 
                         className="w-[130px] h-[84px]"
                         resizeMode="contain"
-                        tintColor={"#4b5563"}
                     />
                     <Image
                         source={images.cards}
@@ -29,8 +28,8 @@ export default function App() {
                     />
                     <View className="relative mt-5">
                         <Text className="text-3xl text-gray-600 font-bold text-center">
-                            Discover Endless Possibilities with
-                            <Text className="text-secondary-200"> Aora</Text>
+                            Khám phá những khả năng vô tận với
+                            <Text className="text-secondary-200"> 2Friend</Text>
                         </Text>
                         <Image 
                             source={images.path}
@@ -40,11 +39,11 @@ export default function App() {
                     </View>
 
                     <Text className="text-sm font-pregular text-gray-500 mt-7 text-center">
-                        Where creativity meets innovation: embark on journey of limitless exploration with HiFriend
+                        Nơi sự sáng tạo gặp gỡ sự đổi mới: bắt đầu hành trình khám phá vô hạn với 2Friend
                     </Text>
 
                     <CustomButton 
-                        title="Continue with Email"
+                        title="Tiếp tục với Email"
                         handlePress = {()=> router.push('/sign-in')}
                         containerStyles="w-full mt-7"
                     />

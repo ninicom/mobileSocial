@@ -75,7 +75,7 @@ const Search = () => {
               className='p-2 w-full'
               scrollEnabled={false}
               data={data.requestFriends}
-              keyExtractor={(item) => `requestFriends${item._id}`}
+              keyExtractor={(item) => `requestFriends${item._id}-${Math.random().toString(36).substr(2, 9)}`}
               ListHeaderComponent={(
                 <Text className='text-lg'>Lời mời kết bạn đã gửi</Text>
               )}
@@ -94,7 +94,7 @@ const Search = () => {
               className='p-2 w-full'
               scrollEnabled={false}
               data={data.orderFriends}
-              keyExtractor={(item) => `orderFriends${item._id}`}
+              keyExtractor={(item) => `orderFriends${item._id}-${Math.random().toString(36).substr(2, 9)}`}
               ListHeaderComponent={(
                 <Text className='text-lg'>Lời mời kết bạn đã nhận</Text>
               )}
@@ -113,7 +113,7 @@ const Search = () => {
               className='p-2 w-full'
               scrollEnabled={false}
               data={data.nonFriends}
-              keyExtractor={(item) => `nonFriends${item._id}`}
+              keyExtractor={(item) => `nonFriends${item._id}-${Math.random().toString(36).substr(2, 9)}`}
               ListHeaderComponent={(
                 <Text className='text-lg'>Người dùng</Text>
               )}

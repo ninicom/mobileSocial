@@ -25,7 +25,6 @@ const ChatCard = ({ chat }) => {
     const [timeSend, setTimeSend] = useState("");
     const [readed, setReaded] = useState(false);
     const { user } = useGlobalContext();
-
     useEffect(() => {
       const fetchUser = async (userId) => {
         const userResponse = await getUser(userId);
@@ -48,7 +47,7 @@ const ChatCard = ({ chat }) => {
         setChatpicture(chat.chatpicture || defaultGroupPicture);
       } else {
         chat.members?.forEach(member => {
-          if (member !== user.userId) {
+          if (member !== user?.userId) {
             fetchUser(member);
           }
         });

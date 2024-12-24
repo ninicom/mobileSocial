@@ -9,7 +9,7 @@ import EmptyState from './EmptyState'
 
 const MessageCard = ({ message }) => {
     // lấy thông tin bản thân
-    const { user: user } = useGlobalContext(); // Lấy giá trị từ context
+    const { user } = useGlobalContext(); // Lấy giá trị từ context
     // 
     const [sender, setSender] = useState(null);
     const [content, setContent] = useState("");
@@ -40,7 +40,7 @@ const MessageCard = ({ message }) => {
                     return;
                 } else {
                     const userResponse = await getUser(userId);
-                    if (userResponse?.user) {
+                    if ( userResponse && userResponse?.user) {
                         setSender(userResponse.user);
                         setisCurrent(false);
                     } else {
@@ -49,7 +49,7 @@ const MessageCard = ({ message }) => {
                 }
 
             } catch (error) {
-                console.error('Error fetching user:', error);
+                console.log('Error fetching user:', error);
             }
         };
 

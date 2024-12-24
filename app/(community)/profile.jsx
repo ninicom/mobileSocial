@@ -1,4 +1,4 @@
-import { View, Image, SafeAreaView, FlatList, TouchableOpacity, ScrollView, RefreshControl } from 'react-native'
+import { View, Image, SafeAreaView, FlatList, TouchableOpacity, ScrollView, RefreshControl, Alert } from 'react-native'
 import { React, useEffect, useCallback, useState } from 'react'
 import EmptyState from '../../components/EmptyState'
 import useAppwrite from '../../lib/useAppwrite'
@@ -12,7 +12,7 @@ import { getCurrentUser, signOut } from '../../lib/apiClient'
 import { getUserPost } from '../../lib/callAPIClient/PostAPI'
 import PostCard from '../../components/PostCard'
 import { getFriends } from '../../lib/callAPIClient/friendAPI'
-import FriendMessageCard from '../../components/Friend/FriendMessageCard' 
+import FriendMessageCard from '../../components/Friend/FriendMessageCard'
 
 const Profile = () => {
 
@@ -25,6 +25,7 @@ const Profile = () => {
   const [viewFriend, setViewFriend] = useState(false);
   const [posts, setPosts] = useState([]);
   const [friends, setFriends] = useState([]);
+  const { setUser, setIsLoggedIn } = useGlobalContext();
 
   useEffect(() => {
 
@@ -58,11 +59,24 @@ const Profile = () => {
     ? { uri: avatar }
     : require('../../assets/default.jpg'); // Hình ảnh mặc định
 
+  const outLockoutClick = () => {
+    Alert.alert('Đăng xuất', `Bạn có muốn đăng xuất không?`,
+      [
+        { text: 'Hủy' },
+        { text: 'Đăng xuất', onPress: () => logout() }
+      ]
+    )
+  }
+
   const logout = async () => {
-    await signOut();
-    setUser(null)
-    setIsLoggedIn(false);
-    router.replace('sign-in');
+    try {
+      router.replace('sign-in');
+      //setUser(null)
+      setIsLoggedIn(false);
+      await signOut();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const onBack = () => {
@@ -84,7 +98,7 @@ const Profile = () => {
         </TouchableOpacity>
         <TouchableOpacity
           className='items-end mb-8 px-4 flex-1'
-          onPress={logout}
+          onPress={outLockoutClick}
         >
           <Image
             source={icons.logout}
@@ -139,7 +153,7 @@ const Profile = () => {
         {(!viewFriend) ? (
           <FlatList
             data={posts}
-            keyExtractor={(item) => `post${item._id}`}
+            keyExtractor={(item) => `post${item._id}-${Math.random().toString(36).substr(2, 9)}`}
             renderItem={({ item }) => (
               <PostCard post={item} />
             )}
@@ -157,7 +171,7 @@ const Profile = () => {
           <FlatList
             data={friends}
             className='px-2'
-            keyExtractor={(item) => `friend${item._id}`}
+            keyExtractor={(item) => `friend${item._id}-${Math.random().toString(36).substr(2, 9)}`}
             renderItem={({ item }) => (
               <FriendMessageCard person={item} />
             )}

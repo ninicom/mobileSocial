@@ -65,7 +65,7 @@ const Chat = () => {
       </View>
       <FlatList
         data={chats}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => `chat${item._id}-${Math.random().toString(36).substr(2, 9)}`}
         renderItem={({ item }) => (
           <ChatCard chat={item} />
         )}

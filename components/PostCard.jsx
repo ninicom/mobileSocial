@@ -12,7 +12,7 @@ import { getUser } from '../lib/callAPIClient/userAPI'
 import { likePost, unLikePost } from '../lib/callAPIClient/PostAPI'
 import { getCommunity } from '../lib/callAPIClient/CommunityAPI'
 
-const PostCard = ({ post, showCommunity = false  }) => {
+const PostCard = ({ post, showCommunity = false, menuShow = false }) => {
 
     const [authorId, setAuthorId] = useState(null);
     const [isLiked, setIsLiked] = useState(false);
@@ -37,9 +37,9 @@ const PostCard = ({ post, showCommunity = false  }) => {
         setMediaPath(post.mediaDetails?.filepath || '');
         setIsLiked(post.isLiked || false);
         setPostLikeCount(post.likeCount || 0);
-        if(showCommunity){
+        if (showCommunity) {
             setIsCommunityPost(post.IsCommunityPost || false);
-        }        
+        }
         setCommunityId(post.Community || '');
 
         // Thiết lập thông tin tác giả
@@ -58,7 +58,7 @@ const PostCard = ({ post, showCommunity = false  }) => {
                     setByline(formatDate(post.CreatedAt));
                 }
             } catch (error) {
-                console.error('Error fetching user:', error);
+                console.log('Error fetching user:', error);
                 Alert.alert('Error', 'Unable to fetch author details.');
             }
         };
@@ -68,7 +68,7 @@ const PostCard = ({ post, showCommunity = false  }) => {
                 const userResponse = await getUser(post.Author);
                 const groupRessponse = await getCommunity(post.Community);
                 console.log(groupRessponse)
-                if(groupRessponse) {                    
+                if (groupRessponse) {
                     setAvatar(groupRessponse.CommunityPictureUrl || 'default-avatar-url');
                     setHeadline(groupRessponse.name || 'Unknown');
                 }
@@ -82,7 +82,7 @@ const PostCard = ({ post, showCommunity = false  }) => {
                     setByline(formatDate(post.CreatedAt));
                 }
             } catch (error) {
-                console.error('Error fetching user:', error);
+                console.log('Error fetching user:', error);
                 Alert.alert('Error', 'Unable to fetch author details.');
             }
         };

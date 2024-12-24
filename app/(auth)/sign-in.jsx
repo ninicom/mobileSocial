@@ -10,8 +10,8 @@ import { useGlobalContext } from '../../context/GlobalProvaider'
 const SignIn = () => {
   const { setUser, setIsLoggedIn } = useGlobalContext();
   const [form, setForm] = useState({
-    email: 'user1@gmail.com',
-    password: 'User1@gmail.com'
+    email: '',
+    password: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -47,26 +47,26 @@ const SignIn = () => {
       <ScrollView>
         <View className="w-full min-h-[85vh] justify-center px-4 my-4">
           <Image 
-            source={images.logo}
+            source={images.logo2}
             resizeMode='contain'
-            className="w-[115px] h-[35px]"
+            className="w-[115px] h-[65px]"
           />
           <Text
             className="text-2xl text-gray-600 font-psemibold mt-10 pb-5"
           >
-            Login to aora
+            Đăng nhập 2Friend
           </Text>
           <FormField 
             title="Email"
             value={form.email}
             handleChangeText={(e) => setForm({ ...form, email: e })}
             otherStyles="mt=7"
-            ketboardType="email-address"
+            ketboardType="Địa chỉ email"
             isMultiline={false}
           />
           
           <FormField 
-            title="Password"
+            title="Mật khẩu"
             value={form.password}
             handleChangeText={(e) => setForm({ ...form, password: e })}
             otherStyles="mt=7"
@@ -75,7 +75,7 @@ const SignIn = () => {
           />
 
           <CustomButton
-            title='Sign In'
+            title='Đăng nhập'
             handlePress={submit}
             containerStyles='mt-7'
             isLoading={isSubmitting}
@@ -87,12 +87,12 @@ const SignIn = () => {
             <Text
               className='text-lg text-gray-500 font-pregular'
             >
-              Don't have account?
+              Chưa có tài khoản?
             </Text>
             <Link href="/sign-up"
               className='text-lg font-semibold text-secondary-100'
             >
-              Sign Up
+              Tạo tài khoản
             </Link>
           </View>          
         </View>
